@@ -92,6 +92,7 @@ void APressurePlateButton::Tick(float DeltaTime)
 		else
 		{
 			MoveUp = false;
+			Button->SetRelativeLocation(OriginalButtonPosition);
 		}
 	}
 	if (Button->GetComponentLocation().X != Plate->GetComponentLocation().X)

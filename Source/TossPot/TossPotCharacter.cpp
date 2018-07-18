@@ -4,11 +4,14 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 
 ATossPotCharacter::ATossPotCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+	/*GetCapsuleComponent()->DestroyComponent();
+	SetRootComponent(GetMesh());*/
 
 	// Don't rotate when the controller rotates.
 	bUseControllerRotationPitch = false;
