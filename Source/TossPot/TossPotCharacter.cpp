@@ -1,10 +1,8 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #include "TossPotCharacter.h"
-#include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ATossPotCharacter::ATossPotCharacter()
@@ -17,19 +15,6 @@ ATossPotCharacter::ATossPotCharacter()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	// Create a camera boom attached to the root (capsule)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->bAbsoluteRotation = true; // Rotation of the character should not affect rotation of boom
-	CameraBoom->bDoCollisionTest = false;
-	CameraBoom->TargetArmLength = 500.f;
-	CameraBoom->SocketOffset = FVector(0.f,0.f,75.f);
-	CameraBoom->RelativeRotation = FRotator(0.f,180.f,0.f);
-
-	// Create a camera and attach to boom
-	SideViewCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("SideViewCamera"));
-	SideViewCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	SideViewCameraComponent->bUsePawnControlRotation = false; // We don't want the controller rotating the camera
 
 	// Configure character movement
 	GetCharacterMovement()->bOrientRotationToMovement = true; // Face in the direction we are moving..
@@ -47,13 +32,13 @@ ATossPotCharacter::ATossPotCharacter()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
-
 void ATossPotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// set up gameplay key bindings
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATossPotCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("MoveUp", this, &ATossPotCharacter::MoveUp);
 
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ATossPotCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &ATossPotCharacter::TouchStopped);
@@ -62,7 +47,13 @@ void ATossPotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 void ATossPotCharacter::MoveRight(float Value)
 {
 	// add movement in that direction
-	AddMovementInput(FVector(0.f,-1.f,0.f), Value);
+	AddMovementInput(FVector(1.f, 0.f, 0.f), Value);
+}
+
+void ATossPotCharacter::MoveUp(float Value)
+{
+	// add movement in that direction
+	AddMovementInput(FVector(0.f, -1.f, 0.f), Value);
 }
 
 void ATossPotCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
