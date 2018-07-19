@@ -40,7 +40,7 @@ public:
 	FVector StartPostion1;
 	FVector StartPostion2;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 		FVector EndPostion1;
 
 	UPROPERTY(EditAnywhere)

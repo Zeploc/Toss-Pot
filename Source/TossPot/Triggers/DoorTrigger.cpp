@@ -2,17 +2,21 @@
 
 #include "DoorTrigger.h"
 
+#include "Components/StaticMeshComponent.h"
+
 // Sets default values
 ADoorTrigger::ADoorTrigger()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	Door = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Door"));
+	Door->SetCollisionProfileName("BlockAll");
 }
 
 void ADoorTrigger::BeginPlay()
 {
-	StartPosition = DoorActor->GetActorLocation();
+	StartPosition = GetActorLocation();
 }
 
 void ADoorTrigger::Tick(float DeltaTime)
@@ -24,10 +28,13 @@ void ADoorTrigger::Trigger()
 {	
 	FVector NewPosition = StartPosition;
 	NewPosition.Z += MoveDistance;
-	DoorActor->SetActorLocation(NewPosition);
+	SetActorLocation(NewPosition);
+	NumOfTriggered++;
 }
 
 void ADoorTrigger::DisableTrigger()
 {
-	DoorActor->SetActorLocation(StartPosition);
+	NumOfTriggered--;
+	if (NumOfTriggered == 0)
+		SetActorLocation(StartPosition);
 }

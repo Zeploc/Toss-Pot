@@ -22,6 +22,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	int NumOfTriggered = 0;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -36,5 +38,9 @@ public:
 		float MoveDistance = 200.0f;
 
 	FVector StartPosition;
+
+	UPROPERTY(VisibleDefaultsOnly)
+		UStaticMeshComponent* Door;
+
 	
 };

@@ -20,11 +20,11 @@ protected:
 	/** Called for side to side input */
 	void MoveUp(float Val);
 
-	/** Handle touch inputs. */
-	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
+	///** Handle touch inputs. */
+	//void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
 
-	/** Handle touch stop event. */
-	void TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location);
+	///** Handle touch stop event. */
+	//void TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location);
 
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
@@ -40,12 +40,8 @@ public:
 
 	void Interact();
 
-	void TossPotJump();
-	void TossPotStopJump();
 
 	UPROPERTY(EditAnywhere)
 		float InteractRange = 100.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool CurrentlyJumping = false;
 };

@@ -14,7 +14,19 @@ class TOSSPOT_API APotCharacter : public ATossPotCharacter
 {
 	GENERATED_BODY()
 	
-	
-	
-	
+protected:
+	// APawn interface
+	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
+
+
+	void PotJump();
+	void PotStopJump();
+
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool CurrentlyJumping = false;
 };
