@@ -39,18 +39,21 @@ public:
 	FVector StartPostion1;
 	FVector StartPostion2;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 		FVector EndPostion1;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 		FVector EndPostion2;
 
-	bool bPlatform1DirectionForward = true;
-	bool bPlatform2DirectionForward = true;
+	bool bPlatform1DirectionForward = false;
+	bool bPlatform2DirectionForward = false;
 
-	UPROPERTY(EditDefaultsOnly)
-		float Platform1Speed = 1.0f;
+	bool bPlatform1Move = false;
+	bool bPlatform2Move = false;
 
-	UPROPERTY(EditDefaultsOnly)
-		float Platform2Speed = 1.0f;
+	UPROPERTY(EditAnywhere)
+		float Platform1Speed = 500.0f;
+
+	UPROPERTY(EditAnywhere)
+		float Platform2Speed = 500.0f;
 };

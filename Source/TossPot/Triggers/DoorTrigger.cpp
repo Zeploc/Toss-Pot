@@ -17,7 +17,7 @@ void ADoorTrigger::BeginPlay()
 
 void ADoorTrigger::Tick(float DeltaTime)
 {
-
+	Super::Tick(DeltaTime);
 }
 
 void ADoorTrigger::Trigger()
