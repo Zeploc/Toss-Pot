@@ -33,5 +33,9 @@ protected:
 
 public:
 	ATossPotCharacter();
+	
+	void Interact();
 
+	UPROPERTY(EditAnywhere)
+		float InteractRange = 100.0f;
 };

@@ -21,7 +21,7 @@ void ADoorTrigger::Tick(float DeltaTime)
 }
 
 void ADoorTrigger::Trigger()
-{
+{	
 	FVector NewPosition = StartPosition;
 	NewPosition.Z += MoveDistance;
 	DoorActor->SetActorLocation(NewPosition);

@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "InteractButton.h"
-#include "ConstructorHelpers.h"
 #include "Engine.h"
 
 
@@ -13,15 +12,8 @@ AInteractButton::AInteractButton()
 
 	ButtonMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Button Skeleton Mesh"));
 	
-	const ConstructorHelpers::FObjectFinder<USkeletalMesh> MeshObj(TEXT("SkeletalMesh'/Game/Models/Interactables/InteractButton/InteractButton.InteractButton'"));
-
-	ButtonMesh->SetSkeletalMesh(MeshObj.Object, true);
-
 	ButtonMesh->SetCollisionProfileName("BlockAll");
 
-	const ConstructorHelpers::FObjectFinder<UAnimSequence> PushAnim(TEXT("AnimSequence'/Game/Models/Interactables/InteractButton/InteractButton_Anim.InteractButton_Anim'"));
-
-	PushAnimation = PushAnim.Object;
 	
 }
 
@@ -55,6 +47,8 @@ void AInteractButton::Interact()
 	{
 		GetWorldTimerManager().SetTimer(DisableTriggerDelay, this, &AInteractButton::DisableTrigger, DelayTime, false);
 	}
+	else
+		TriggerActor->DisableTrigger();
 }
 
 void AInteractButton::DisableTrigger()

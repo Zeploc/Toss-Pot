@@ -5,6 +5,11 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Engine.h"
+
+#include "Interactables/InteractActor.h"
+
+#include "DrawDebugHelpers.h"
 
 ATossPotCharacter::ATossPotCharacter()
 {
@@ -45,6 +50,8 @@ void ATossPotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &ATossPotCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &ATossPotCharacter::TouchStopped);
+
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ATossPotCharacter::Interact);
 }
 
 void ATossPotCharacter::MoveRight(float Value)
@@ -70,3 +77,22 @@ void ATossPotCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const 
 	StopJumping();
 }
 
+void ATossPotCharacter::Interact()
+{
+	FHitResult hit;
+	FVector EndLocation = GetActorLocation() + GetActorRotation().Vector() * InteractRange;
+	FCollisionQueryParams Traceparams(TEXT("Interact Trace"), false, this);
+
+	GetWorld()->LineTraceSingleByChannel(hit, GetActorLocation(), EndLocation, ECC_GameTraceChannel1, Traceparams);
+	AInteractActor* InteractActor = Cast<AInteractActor>(hit.Actor);
+	if (InteractActor)
+	{
+		InteractActor->Interact();
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, TEXT("Interact with interact actor"));
+	}
+	else if (hit.bBlockingHit)
+	{
+		//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Cyan, TEXT("Interact Hit object " + hit.Actor.Get()->GetFName().ToString()));
+	}
+	
+}
