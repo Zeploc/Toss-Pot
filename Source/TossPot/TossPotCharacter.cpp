@@ -43,8 +43,8 @@ ATossPotCharacter::ATossPotCharacter()
 void ATossPotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	// set up gameplay key bindings
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ATossPotCharacter::TossPotJump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ATossPotCharacter::TossPotStopJump);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATossPotCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("MoveUp", this, &ATossPotCharacter::MoveUp);
 
@@ -52,6 +52,25 @@ void ATossPotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindTouch(IE_Released, this, &ATossPotCharacter::TouchStopped);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ATossPotCharacter::Interact);
+}
+
+void ATossPotCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (CurrentlyJumping && CanJump())
+		CurrentlyJumping = false;
+}
+
+void ATossPotCharacter::TossPotJump()
+{
+	Jump();
+	CurrentlyJumping = true;
+}
+
+void ATossPotCharacter::TossPotStopJump()
+{
+	StopJumping();
 }
 
 void ATossPotCharacter::MoveRight(float Value)

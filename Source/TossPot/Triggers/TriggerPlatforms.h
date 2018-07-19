@@ -29,9 +29,10 @@ public:
 
 	virtual void Trigger();
 	virtual void DisableTrigger();
+	
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		AActor* Platform1;
+	UPROPERTY(VisibleDefaultsOnly)
+		UStaticMeshComponent* Platform;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* Platform2;

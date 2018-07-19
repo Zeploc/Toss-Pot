@@ -23,8 +23,6 @@ void ATriggerActor::BeginPlay()
 void ATriggerActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	GEngine->AddOnScreenDebugMessage(-1, 0.005f, FColor::Green, TEXT("BASE TICK RUNNING"));
 }
 
 // Called every frame

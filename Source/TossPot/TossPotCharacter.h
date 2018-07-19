@@ -31,11 +31,21 @@ protected:
 	// End of APawn interface
 
 
+
 public:
 	ATossPotCharacter();
-	
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	void Interact();
+
+	void TossPotJump();
+	void TossPotStopJump();
 
 	UPROPERTY(EditAnywhere)
 		float InteractRange = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool CurrentlyJumping = false;
 };
