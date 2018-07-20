@@ -4,6 +4,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
+#include "TossPotCharacter.h"
+
 
 // Sets default values
 ACameraMovement::ACameraMovement()
@@ -39,5 +41,25 @@ void ACameraMovement::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector CurrentLocation = GetActorLocation();
+	CurrentLocation.X = FMath::Lerp(Player1->GetActorLocation(), Player2->GetActorLocation(), 0.5).X;
+	SetActorLocation(CurrentLocation);
+
+	FVector Distance = (Player1->GetActorLocation() - Player2->GetActorLocation()).GetAbs();
+
+	float CenterThreshold = 1000.0f;
+	if (Distance.X > CenterThreshold) // or if players and too high or low
+	{
+		float CurrentZoom = Distance.X - CenterThreshold;
+		float ratio = 0.4f;
+		CurrentZoom *= ratio;
+		CurrentZoom += CloseBoomArmLength;
+		CameraBoom->TargetArmLength = CurrentZoom;
+		CurrentZoom += CloseBoomArmZ - CloseBoomArmLength;
+		FVector NewSocketOffset = CameraBoom->SocketOffset;
+		NewSocketOffset.Z = CurrentZoom;
+		CameraBoom->SocketOffset = NewSocketOffset;
+	}
 }
+
 

@@ -31,5 +31,16 @@ public:
 	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		class USpringArmComponent* CameraBoom;
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class ATossPotCharacter* Player1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class ATossPotCharacter* Player2;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float CloseBoomArmLength;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float CloseBoomArmZ;
+
 };

@@ -30,10 +30,7 @@ public:
 
 	virtual void Trigger();
 	virtual void DisableTrigger();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		AActor* DoorActor;
-
+	
 	UPROPERTY(EditAnywhere)
 		float MoveDistance = 200.0f;
 
