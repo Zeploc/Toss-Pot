@@ -62,6 +62,11 @@ void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, 
 {
 	if (OverlappedComp != Plate && OverlappedComp != Button && OtherActor != this)
 	{
+		if (GetWorldTimerManager().TimerExists(OverlapDelayHandler))
+		{
+			GetWorldTimerManager().ClearTimer(OverlapDelayHandler);
+			return;
+		}
 		//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("OVERLAPPING BUTTON"));
 		Button->SetSimulatePhysics(true);
 		IsOverlapping = true;
