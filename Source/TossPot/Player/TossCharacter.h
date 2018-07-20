@@ -13,7 +13,7 @@ UCLASS()
 class TOSSPOT_API ATossCharacter : public ATossPotCharacter
 {
 	GENERATED_BODY()
-	
+
 	
 	
 	
