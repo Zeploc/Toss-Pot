@@ -13,6 +13,17 @@ class ATossPotGameMode : public AGameModeBase
 
 public:
 	ATossPotGameMode();
+
+	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class ATossPotCharacter* Player1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class ATossPotCharacter* Player2;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 };
 
 
