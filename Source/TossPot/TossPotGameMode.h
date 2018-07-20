@@ -14,16 +14,25 @@ class ATossPotGameMode : public AGameModeBase
 public:
 	ATossPotGameMode();
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class ATossPotCharacter* Player1;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class ATossPotCharacter* Player2;
+	
+	UPROPERTY(EditAnywhere)
+		float SafeRange = 400.0f;
+
+	UPROPERTY(EditAnywhere)
+		float DeadZone = 1500.0f;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 };
 
 

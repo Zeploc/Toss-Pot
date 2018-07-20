@@ -9,8 +9,6 @@ void APotCharacter::Tick(float DeltaTime)
 
 	if (CurrentlyJumping && CanJump())
 		CurrentlyJumping = false;
-
-	//CanBeBaseForCharacter
 }
 
 // Input

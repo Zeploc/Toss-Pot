@@ -30,7 +30,8 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	// End of APawn interface
 
-
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 public:
 	ATossPotCharacter();
@@ -43,5 +44,5 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		float InteractRange = 100.0f;
-
+	
 };

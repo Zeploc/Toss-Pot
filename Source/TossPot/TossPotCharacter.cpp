@@ -8,6 +8,7 @@
 #include "Engine.h"
 
 #include "Interactables/InteractActor.h"
+#include "TossPotGameMode.h"
 
 #include "DrawDebugHelpers.h"
 
@@ -55,9 +56,17 @@ void ATossPotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ATossPotCharacter::Interact);
 }
 
+// Called when the game starts or when spawned
+void ATossPotCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
 void ATossPotCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 }
 
 void ATossPotCharacter::MoveRight(float Value)
