@@ -12,8 +12,7 @@ ACameraMovement::ACameraMovement()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-
+	
 	// Create a camera boom attached to the root (capsule)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
@@ -42,15 +41,49 @@ void ACameraMovement::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	FVector CurrentLocation = GetActorLocation();
-	CurrentLocation.X = FMath::Lerp(Player1->GetActorLocation(), Player2->GetActorLocation(), 0.5).X;
+	FVector CenterPosition = FMath::Lerp(Player1->GetActorLocation(), Player2->GetActorLocation(), 0.5);
+	CurrentLocation.X = CenterPosition.X;
 	SetActorLocation(CurrentLocation);
 
 	FVector Distance = (Player1->GetActorLocation() - Player2->GetActorLocation()).GetAbs();
 
+	
+	// Check player y distance is too far
+	// OR
+	// One player is outside pos range
 	float CenterThreshold = 1000.0f;
-	if (Distance.X > CenterThreshold) // or if players and too high or low
+
+	bool bTooFarY = Distance.Y > DistanceMaxY;
+	bool bTooFarX = Distance.X > CenterThreshold;
+	bool bYHigherOffset = CenterPosition.Y > MaxPosY;
+	bool bYLowerOffset = CenterPosition.Y < MinPosY;
+
+	if (bTooFarY || bTooFarX || (bYHigherOffset || bYLowerOffset)) // or if players and too high or low
 	{
-		float CurrentZoom = Distance.X - CenterThreshold;
+		float YDifference = Distance.Y - DistanceMaxY;
+		float XDifference = Distance.X - CenterThreshold;
+		float CurrentZoom;
+		if (bTooFarX && bTooFarY)
+			CurrentZoom = XDifference + YDifference;
+		else if (bTooFarX)
+			CurrentZoom = XDifference;
+		else if (bTooFarY)
+			CurrentZoom = YDifference;
+
+		if (bYHigherOffset || bYLowerOffset)
+		{
+			FVector CurrentPos = GetActorLocation();
+			if (bYHigherOffset)
+			{
+				CurrentPos.Y = CenterPosition.Y - MaxPosY;
+			}
+			else
+			{
+				CurrentPos.Y = CenterPosition.Y - MinPosY;
+			}
+			SetActorLocation(CurrentPos);
+		}
+
 		float ratio = 0.4f;
 		CurrentZoom *= ratio;
 		CurrentZoom += CloseBoomArmLength;

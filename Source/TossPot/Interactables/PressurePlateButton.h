@@ -50,14 +50,12 @@ protected:
 
 	FVector OriginalButtonPosition;
 	
-
-
-
-
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float ReturnTime = 0.25f;
 	
 };

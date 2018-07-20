@@ -43,4 +43,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		float CloseBoomArmZ;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float MinPosY = -350;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float MaxPosY = 150;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float DistanceMaxY = 400;
+
 };
