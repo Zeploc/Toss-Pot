@@ -6,16 +6,14 @@
 
 ATriggerPlatforms::ATriggerPlatforms()
 {
-
+	Platform = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Platform 1"));
+	Platform->SetCollisionObjectType(ECC_GameTraceChannel2);
 }
 
 void ATriggerPlatforms::BeginPlay()
 {
 	Super::BeginPlay();
-	if (Platform1)
-	{
-		StartPostion1 = Platform1->GetActorLocation();
-	}
+	StartPostion1 = GetActorLocation();
 	if (Platform2)
 	{
 		StartPostion2 = Platform2->GetActorLocation();
@@ -26,17 +24,17 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (Platform1 && bPlatform1Move)
+	if (bPlatform1Move)
 	{
 		FVector Direction = (EndPostion1 - StartPostion1);
 		Direction.Normalize();
-		FVector CurrentPlatformLocation = Platform1->GetActorLocation();
+		FVector CurrentPlatformLocation = GetActorLocation();
 
 
 		if (bPlatform1DirectionForward)
 		{
-			Platform1->SetActorLocation(CurrentPlatformLocation + Direction * DeltaTime * Platform1Speed);
-
+			SetActorLocation(CurrentPlatformLocation + Direction * DeltaTime * Platform1Speed, true);
+			
 			FVector DirectionFromCurrent = EndPostion1 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize(); 
 			FVector ResultVector = Direction + DirectionFromCurrent;
@@ -44,12 +42,12 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			if (ResultVector.GetAbs() == FVector::ZeroVector)
 			{
 				bPlatform1Move = false;
-				Platform1->SetActorLocation(EndPostion1);
+				SetActorLocation(EndPostion1);
 			}
 		}
 		else
 		{
-			Platform1->SetActorLocation(CurrentPlatformLocation - Direction * DeltaTime * Platform1Speed);
+			SetActorLocation(CurrentPlatformLocation - Direction * DeltaTime * Platform1Speed, true);
 
 			FVector DirectionFromCurrent = StartPostion1 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize();
@@ -58,7 +56,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			if (ResultVector.GetAbs() == FVector::ZeroVector)
 			{
 				bPlatform1Move = false;
-				Platform1->SetActorLocation(StartPostion1);
+				SetActorLocation(StartPostion1);
 			}
 		}
 	}
@@ -71,7 +69,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 		
 		if (bPlatform1DirectionForward)
 		{
-			Platform2->SetActorLocation(CurrentPlatformLocation + Direction * DeltaTime * Platform2Speed);
+			Platform2->SetActorLocation(CurrentPlatformLocation + Direction * DeltaTime * Platform2Speed, true);
 
 			FVector DirectionFromCurrent = EndPostion2 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize();
@@ -85,7 +83,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 		}
 		else
 		{
-			Platform2->SetActorLocation(CurrentPlatformLocation - Direction * DeltaTime * Platform2Speed);
+			Platform2->SetActorLocation(CurrentPlatformLocation - Direction * DeltaTime * Platform2Speed, true);
 
 			FVector DirectionFromCurrent = StartPostion2 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize();

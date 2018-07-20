@@ -29,9 +29,10 @@ public:
 
 	virtual void Trigger();
 	virtual void DisableTrigger();
+	
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		AActor* Platform1;
+	UPROPERTY(VisibleDefaultsOnly)
+		UStaticMeshComponent* Platform;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* Platform2;
@@ -39,7 +40,7 @@ public:
 	FVector StartPostion1;
 	FVector StartPostion2;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 		FVector EndPostion1;
 
 	UPROPERTY(EditAnywhere)

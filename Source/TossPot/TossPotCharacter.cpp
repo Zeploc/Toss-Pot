@@ -42,16 +42,22 @@ ATossPotCharacter::ATossPotCharacter()
 // Input
 void ATossPotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
 	// set up gameplay key bindings
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ATossPotCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("MoveUp", this, &ATossPotCharacter::MoveUp);
 
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &ATossPotCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &ATossPotCharacter::TouchStopped);
+	//PlayerInputComponent->BindTouch(IE_Pressed, this, &ATossPotCharacter::TouchStarted);
+	//PlayerInputComponent->BindTouch(IE_Released, this, &ATossPotCharacter::TouchStopped);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ATossPotCharacter::Interact);
+}
+
+void ATossPotCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
 }
 
 void ATossPotCharacter::MoveRight(float Value)
@@ -64,17 +70,6 @@ void ATossPotCharacter::MoveUp(float Value)
 {
 	// add movement in that direction
 	AddMovementInput(FVector(0.f, -1.f, 0.f), Value);
-}
-
-void ATossPotCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	// jump on any touch
-	Jump();
-}
-
-void ATossPotCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	StopJumping();
 }
 
 void ATossPotCharacter::Interact()
