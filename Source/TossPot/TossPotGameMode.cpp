@@ -31,12 +31,16 @@ void ATossPotGameMode::Tick(float DeltaTime)
 			if (Distance > DeadZone)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 0.001f, FColor::Red, TEXT("DEADZONE " + FString::SanitizeFloat(Distance)));
+				CurrentDanger = 0.0f;
 			}
 			else
 			{
 				float CurrentValue = (Distance - SafeRange) / (DeadZone - SafeRange);
+				CurrentDanger = 1 - CurrentValue;
 				GEngine->AddOnScreenDebugMessage(-1, 0.001f, FColor::Orange, TEXT("UNSAFE " + FString::SanitizeFloat(CurrentValue)));
 			}
 		}
+		else if (CurrentDanger != 1.0f)
+			CurrentDanger = 1.0f;
 	}
 }

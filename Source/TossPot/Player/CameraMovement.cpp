@@ -3,6 +3,7 @@
 #include "CameraMovement.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Engine.h"
 
 #include "TossPotCharacter.h"
 
@@ -39,60 +40,69 @@ void ACameraMovement::BeginPlay()
 void ACameraMovement::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	FVector CurrentLocation = GetActorLocation();
-	FVector CenterPosition = FMath::Lerp(Player1->GetActorLocation(), Player2->GetActorLocation(), 0.5);
-	CurrentLocation.X = CenterPosition.X;
-	SetActorLocation(CurrentLocation);
-
-	FVector Distance = (Player1->GetActorLocation() - Player2->GetActorLocation()).GetAbs();
-
-	
-	// Check player y distance is too far
-	// OR
-	// One player is outside pos range
-	float CenterThreshold = 1000.0f;
-
-	bool bTooFarY = Distance.Y > DistanceMaxY;
-	bool bTooFarX = Distance.X > CenterThreshold;
-	bool bYHigherOffset = CenterPosition.Y > MaxPosY;
-	bool bYLowerOffset = CenterPosition.Y < MinPosY;
-
-	if (bTooFarY || bTooFarX || (bYHigherOffset || bYLowerOffset)) // or if players and too high or low
+	if (Player1 && Player2)
 	{
-		float YDifference = Distance.Y - DistanceMaxY;
-		float XDifference = Distance.X - CenterThreshold;
-		float CurrentZoom;
-		if (bTooFarX && bTooFarY)
-			CurrentZoom = XDifference + YDifference;
-		else if (bTooFarX)
-			CurrentZoom = XDifference;
-		else if (bTooFarY)
-			CurrentZoom = YDifference;
+		FVector CurrentLocation = GetActorLocation();
+		FVector CenterPosition = FMath::Lerp(Player1->GetActorLocation(), Player2->GetActorLocation(), 0.5);
+		CurrentLocation.X = CenterPosition.X;
+		SetActorLocation(CurrentLocation);
 
-		if (bYHigherOffset || bYLowerOffset)
+		FVector Distance = (Player1->GetActorLocation() - Player2->GetActorLocation()).GetAbs();
+		
+
+		// Check player y distance is too far
+		// OR
+		// One player is outside pos range
+		float CenterThreshold = 1000.0f;
+
+		bool bTooFarY = Distance.Y > DistanceMaxY;
+		bool bTooFarX = Distance.X > CenterThreshold;
+		bool bYHigherOffset = CenterPosition.Y > MaxPosY;
+		bool bYLowerOffset = CenterPosition.Y < MinPosY;
+
+		if (bTooFarY || bTooFarX || (bYHigherOffset || bYLowerOffset)) // or if players and too high or low
 		{
-			FVector CurrentPos = GetActorLocation();
-			if (bYHigherOffset)
-			{
-				CurrentPos.Y = CenterPosition.Y - MaxPosY;
-			}
-			else
-			{
-				CurrentPos.Y = CenterPosition.Y - MinPosY;
-			}
-			SetActorLocation(CurrentPos);
-		}
+			float YDifference = Distance.Y - DistanceMaxY;
+			float XDifference = Distance.X - CenterThreshold;
+			float CurrentZoom = 0;
+			if (bTooFarX && bTooFarY)
+				CurrentZoom = XDifference + YDifference;
+			else if (bTooFarX)
+				CurrentZoom = XDifference;
+			else if (bTooFarY)
+				CurrentZoom = YDifference;
 
-		float ratio = 0.4f;
-		CurrentZoom *= ratio;
-		CurrentZoom += CloseBoomArmLength;
-		CameraBoom->TargetArmLength = CurrentZoom;
-		CurrentZoom += CloseBoomArmZ - CloseBoomArmLength;
-		FVector NewSocketOffset = CameraBoom->SocketOffset;
-		NewSocketOffset.Z = CurrentZoom;
-		CameraBoom->SocketOffset = NewSocketOffset;
-	}
+
+			
+			if (bYHigherOffset || bYLowerOffset)
+			{
+				FVector CurrentPos = GetActorLocation();
+				if (bYHigherOffset)
+				{
+					CurrentPos.Y = CenterPosition.Y - MaxPosY;
+				}
+				else
+				{
+					CurrentPos.Y = CenterPosition.Y - MinPosY;
+				}
+				SetActorLocation(CurrentPos);
+				
+			}
+			
+			float ratio = 0.4f;
+			CurrentZoom *= ratio;
+			CurrentZoom += CloseBoomArmLength;
+			CameraBoom->TargetArmLength = CurrentZoom;
+			CurrentZoom += CloseBoomArmZ - CloseBoomArmLength;
+			FVector NewSocketOffset = CameraBoom->SocketOffset;
+			NewSocketOffset.Z = CurrentZoom;
+			CameraBoom->SocketOffset = NewSocketOffset;
+			
+
+		}
+		GEngine->AddOnScreenDebugMessage(-1, 0.001f, FColor::Orange, TEXT("Curren arm length " + FString::SanitizeFloat(CameraBoom->TargetArmLength)));
+
+	}	
 }
 
 
