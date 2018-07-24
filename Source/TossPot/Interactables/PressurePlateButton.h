@@ -68,4 +68,13 @@ public:
 
 	UMaterialInstanceDynamic* ButtonMID;
 	UMaterialInstanceDynamic* PressedButtonMID;
+
+	/*UPROPERTY(EditDefaultsOnly, Category = "Audio")
+		USoundCue* PressCue;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Audio")
+		USoundCue* ReleasedCue;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Audio")
+		UAudioComponent* ButtonAudioComponent;*/
 };

@@ -3,6 +3,7 @@
 #include "DoorTrigger.h"
 
 #include "Components/StaticMeshComponent.h"
+#include "Engine.h"
 
 // Sets default values
 ADoorTrigger::ADoorTrigger()
@@ -30,11 +31,13 @@ void ADoorTrigger::Trigger()
 	NewPosition.Z += MoveDistance;
 	SetActorLocation(NewPosition);
 	NumOfTriggered++;
+	GEngine->AddOnScreenDebugMessage(-1, 5.000f, FColor::Orange, TEXT("Current Door Number " + FString::SanitizeFloat(NumOfTriggered)));
 }
 
 void ADoorTrigger::DisableTrigger()
 {
-	NumOfTriggered--;
+	if (NumOfTriggered > 0 ) NumOfTriggered--;
+	GEngine->AddOnScreenDebugMessage(-1, 5.000f, FColor::Orange, TEXT("Current Door Number " + FString::SanitizeFloat(NumOfTriggered)));
 	if (NumOfTriggered == 0)
 		SetActorLocation(StartPosition);
 }
