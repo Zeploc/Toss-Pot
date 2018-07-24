@@ -35,8 +35,6 @@ APressurePlateButton::APressurePlateButton()
 	CylinderCollider->OnComponentEndOverlap.AddDynamic(this, &APressurePlateButton::OnButtonEndOverlap);
 
 	Button->SetAbsolute(false, true, true);
-
-
 }
 
 // Called when the game starts or when spawned
@@ -45,6 +43,20 @@ void APressurePlateButton::BeginPlay()
 	Super::BeginPlay();
 	OriginalButtonPosition = Button->GetComponentLocation();
 
+	ButtonMID = UMaterialInstanceDynamic::Create(ButtonMaterial, this);
+	PressedButtonMID = UMaterialInstanceDynamic::Create(PressedButtonMaterial, this);
+}
+
+void APressurePlateButton::ChangeLight(bool _bLit)
+{
+	if (_bLit)
+	{
+		if (PressedButtonMID) Button->SetMaterial(0, PressedButtonMID);
+	}
+	else
+	{
+		if (ButtonMID) Button->SetMaterial(0, ButtonMID);
+	}
 }
 
 void APressurePlateButton::OverlapDelay()
@@ -55,6 +67,9 @@ void APressurePlateButton::OverlapDelay()
 		Button->SetSimulatePhysics(false);
 		MoveUp = true;
 		if (TriggerActor != nullptr) TriggerActor->DisableTrigger();
+		// Disable Sound
+		// Turn off light
+		ChangeLight(false);
 	}
 }
 
@@ -62,21 +77,27 @@ void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, 
 {
 	if (OverlappedComp != Plate && OverlappedComp != Button && OtherActor != this)
 	{
+		NumOnButton++;
+		if (NumOnButton > 1) return;
 		if (GetWorldTimerManager().TimerExists(OverlapDelayHandler))
 		{
 			GetWorldTimerManager().ClearTimer(OverlapDelayHandler);
 			return;
 		}
-		//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("OVERLAPPING BUTTON"));
 		Button->SetSimulatePhysics(true);
 		IsOverlapping = true;
 		MoveUp = false;
 		if (TriggerActor != nullptr) TriggerActor->Trigger();
+		// Light Up
+		ChangeLight(true);
+		// Enable sound
 	}
 }
 
 void APressurePlateButton::OnButtonEndOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
+	if (NumOnButton > 0) NumOnButton--;
+	if (NumOnButton > 0) return;
 	IsOverlapping = false;
 	if (ReturnTime != 0.0f) GetWorldTimerManager().SetTimer(OverlapDelayHandler, this, &APressurePlateButton::OverlapDelay, ReturnTime, false);
 	else OverlapDelay();
@@ -86,14 +107,13 @@ void APressurePlateButton::OnButtonEndOverlap(UPrimitiveComponent * OverlappedCo
 void APressurePlateButton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 	if (MoveUp == true && IsOverlapping == false)
 	{
 		
 		if (Button->GetComponentLocation().Z < OriginalButtonPosition.Z)
 		{
 			Button->MoveComponent(Button->GetUpVector(), Button->GetComponentRotation(), true);
-
 		}
 		else
 		{
@@ -112,8 +132,6 @@ void APressurePlateButton::Tick(float DeltaTime)
 		FVector Newlocation = Button->GetComponentLocation();
 		Newlocation.Y = Plate->GetComponentLocation().Y;
 		Button->SetWorldLocation(Newlocation);
-	}
-	
-
+	}	
 }
 

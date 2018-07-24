@@ -42,6 +42,7 @@ protected:
 	bool IsOverlapping = false;
 	bool MoveUp = false;
 
+	void ChangeLight(bool _bLit);
 
 	FTimerHandle OverlapDelayHandler;
 	void OverlapDelay();
@@ -50,6 +51,7 @@ protected:
 
 	FVector OriginalButtonPosition;
 	
+	int NumOnButton = 0;
 	
 public:	
 	// Called every frame
@@ -57,5 +59,13 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ReturnTime = 0.25f;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+		UMaterial* ButtonMaterial;
+
+	UPROPERTY(EditDefaultsOnly)
+		UMaterial* PressedButtonMaterial;
+
+	UMaterialInstanceDynamic* ButtonMID;
+	UMaterialInstanceDynamic* PressedButtonMID;
 };
