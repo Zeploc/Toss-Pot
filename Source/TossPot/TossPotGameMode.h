@@ -29,6 +29,9 @@ public:
 	UPROPERTY(EditAnywhere)
 		float DeadZone = 1500.0f;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		float CurrentDanger = 1.0f;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
