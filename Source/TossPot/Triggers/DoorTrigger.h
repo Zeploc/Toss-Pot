@@ -45,6 +45,9 @@ public:
 	UPROPERTY(VisibleDefaultsOnly)
 		UStaticMeshComponent* DoorFrame;
 
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* MoveSound;
+
 	bool bOpen = false;
 	bool bClose = false;
 	

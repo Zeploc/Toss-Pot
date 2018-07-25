@@ -66,6 +66,7 @@ void ADoorTrigger::Trigger()
 	SetActorLocation(NewPosition);*/
 	bOpen = true;
 	bClose = false;
+	if (NumOfTriggered == 0) UGameplayStatics::PlaySoundAtLocation(this, MoveSound, GetActorLocation());
 	NumOfTriggered++;
 	GEngine->AddOnScreenDebugMessage(-1, 5.000f, FColor::Orange, TEXT("[Enable] Current Door Number " + FString::SanitizeFloat(NumOfTriggered)));
 }
@@ -78,6 +79,7 @@ void ADoorTrigger::DisableTrigger()
 	{
 		bOpen = false;
 		bClose = true;
+		UGameplayStatics::PlaySoundAtLocation(this, MoveSound, GetActorLocation());
 		//SetActorLocation(StartPosition);
 	}
 }
