@@ -13,6 +13,8 @@ UCLASS()
 class TOSSPOT_API AInteractLever : public AInteractActor
 {
 	GENERATED_BODY()
+
+	
 	
 	UPROPERTY(VisibleDefaultsOnly)
 		UStaticMeshComponent* LeverMesh;
@@ -39,6 +41,11 @@ class TOSSPOT_API AInteractLever : public AInteractActor
 
 	UFUNCTION()
 		void OnLeverEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+public:
+
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* ClickSound;
 
 public:
 	// Sets default values for this actor's properties

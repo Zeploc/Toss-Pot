@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PotCharacter.h"
+#include "Engine.h"
 
 
 void APotCharacter::Tick(float DeltaTime)
@@ -23,6 +24,8 @@ void APotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 void APotCharacter::PotJump()
 {
 	Jump();
+	UGameplayStatics::PlaySound2D(this, JumpSound);
+
 	CurrentlyJumping = true;
 }
 

@@ -25,7 +25,8 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* JumpSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool CurrentlyJumping = false;
