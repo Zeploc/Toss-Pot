@@ -43,19 +43,19 @@ void APressurePlateButton::BeginPlay()
 	Super::BeginPlay();
 	OriginalButtonPosition = Button->GetComponentLocation();
 
-	ButtonMID = UMaterialInstanceDynamic::Create(ButtonMaterial, this);
-	PressedButtonMID = UMaterialInstanceDynamic::Create(PressedButtonMaterial, this);
+	ButtonMID = UMaterialInstanceDynamic::Create(Button->GetMaterial(0), this);
+	Button->SetMaterial(0, ButtonMID);
 }
 
 void APressurePlateButton::ChangeLight(bool _bLit)
 {
 	if (_bLit)
 	{
-		if (PressedButtonMID) Button->SetMaterial(0, PressedButtonMID);
+		ButtonMID->SetScalarParameterValue("Lit", 1.0f);
 	}
 	else
 	{
-		if (ButtonMID) Button->SetMaterial(0, ButtonMID);
+		ButtonMID->SetScalarParameterValue("Lit", 0.0f);
 	}
 }
 
@@ -71,7 +71,6 @@ void APressurePlateButton::OverlapDelay()
 		// Turn off light
 		ChangeLight(false);
 
-		GEngine->AddOnScreenDebugMessage(-1, 4.00f, FColor::Orange, TEXT("Should Release " + FString::SanitizeFloat(NumOnButton)));
 	}
 }
 
@@ -95,7 +94,6 @@ void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, 
 		ChangeLight(true);
 		// Enable sound
 
-		GEngine->AddOnScreenDebugMessage(-1, 4.00f, FColor::Orange, TEXT("Start overlap " + FString::SanitizeFloat(NumOnButton)));
 	}
 }
 
@@ -111,7 +109,6 @@ void APressurePlateButton::OnButtonEndOverlap(UPrimitiveComponent * OverlappedCo
 		IsOverlapping = false;
 		if (ReturnTime != 0.0f) GetWorldTimerManager().SetTimer(OverlapDelayHandler, this, &APressurePlateButton::OverlapDelay, ReturnTime, false);
 		else OverlapDelay();
-		GEngine->AddOnScreenDebugMessage(-1, 4.00f, FColor::Orange, TEXT("End overlap " + FString::SanitizeFloat(NumOnButton)));
 	}
 }
 

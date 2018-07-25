@@ -11,11 +11,6 @@ class TOSSPOT_API APressurePlateButton : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleDefaultsOnly)
-		class UStaticMeshComponent* Plate;
-
-	UPROPERTY(VisibleDefaultsOnly)
-		class UStaticMeshComponent* Button;
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UStaticMeshComponent* CylinderCollider;
@@ -34,6 +29,12 @@ class TOSSPOT_API APressurePlateButton : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APressurePlateButton();
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
+		class UStaticMeshComponent* Plate;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
+		class UStaticMeshComponent* Button;
 
 protected:
 	// Called when the game starts or when spawned
@@ -59,15 +60,8 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ReturnTime = 0.25f;
-
-	UPROPERTY(EditDefaultsOnly)
-		UMaterial* ButtonMaterial;
-
-	UPROPERTY(EditDefaultsOnly)
-		UMaterial* PressedButtonMaterial;
-
+	
 	UMaterialInstanceDynamic* ButtonMID;
-	UMaterialInstanceDynamic* PressedButtonMID;
 
 	/*UPROPERTY(EditDefaultsOnly, Category = "Audio")
 		USoundCue* PressCue;
