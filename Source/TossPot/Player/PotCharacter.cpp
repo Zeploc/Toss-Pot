@@ -23,9 +23,9 @@ void APotCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 
 void APotCharacter::PotJump()
 {
+	if (CanJump()) UGameplayStatics::PlaySound2D(this, JumpSound);
 	Jump();
-	UGameplayStatics::PlaySound2D(this, JumpSound);
-
+	
 	CurrentlyJumping = true;
 }
 

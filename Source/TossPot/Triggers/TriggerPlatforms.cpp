@@ -3,11 +3,15 @@
 #include "TriggerPlatforms.h"
 
 #include "Engine.h"
+#include "Components/AudioComponent.h"
 
 ATriggerPlatforms::ATriggerPlatforms()
 {
 	Platform = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Platform 1"));
 	Platform->SetCollisionObjectType(ECC_GameTraceChannel2);
+
+	MovementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("MovementAudioComponent"));
+	MovementAudioComponent->SetSound(MovingSound);
 }
 
 void ATriggerPlatforms::BeginPlay()
@@ -38,11 +42,13 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			FVector DirectionFromCurrent = EndPostion1 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize(); 
 			FVector ResultVector = Direction + DirectionFromCurrent;
+			MovementAudioComponent->Play();
 			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Current Result: " + ResultVector.ToString() + " Vectors (Current | Direction) " + DirectionFromCurrent.ToCompactString() + " | " + Direction.ToCompactString()));
 			if (ResultVector.GetAbs() == FVector::ZeroVector)
 			{
 				bPlatform1Move = false;
 				SetActorLocation(EndPostion1);
+				MovementAudioComponent->Stop();
 			}
 		}
 		else
@@ -52,11 +58,14 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			FVector DirectionFromCurrent = StartPostion1 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize();
 			FVector ResultVector = -Direction + DirectionFromCurrent;
+			//UGameplayStatics::PlaySoundAtLocation(this, MovingSound, GetActorLocation());
+			MovementAudioComponent->Play();
 			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Current Result: " + ResultVector.ToString() + " Vectors (Current | Direction) " + DirectionFromCurrent.ToCompactString() + " | " + Direction.ToCompactString()));
 			if (ResultVector.GetAbs() == FVector::ZeroVector)
 			{
 				bPlatform1Move = false;
 				SetActorLocation(StartPostion1);
+				MovementAudioComponent->Stop();
 			}
 		}
 	}

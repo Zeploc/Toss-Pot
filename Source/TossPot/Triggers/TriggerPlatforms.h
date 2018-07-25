@@ -37,6 +37,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* Platform2;
 
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* MovingSound;
+
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		UAudioComponent* MovementAudioComponent;
+
 	FVector StartPostion1;
 	FVector StartPostion2;
 
