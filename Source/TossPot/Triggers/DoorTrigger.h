@@ -32,17 +32,17 @@ public:
 	virtual void DisableTrigger();
 	
 	UPROPERTY(EditAnywhere)
-		float MoveDistance = 200.0f;
+		float MoveDistance = 300.0f;
 
 	UPROPERTY(EditAnywhere)
 		float MoveSpeed = 400.0f;
 
 	FVector StartPosition;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleDefaultsOnly)
 		UStaticMeshComponent* Door;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleDefaultsOnly)
 		UStaticMeshComponent* DoorFrame;
 
 	bool bOpen = false;
