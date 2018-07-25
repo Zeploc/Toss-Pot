@@ -4,6 +4,7 @@
 
 #include "Components/StaticMeshComponent.h"
 #include "Triggers/TriggerActor.h"
+#include "Triggers/DoorTrigger.h"
 #include "Engine.h"
 
 
@@ -46,6 +47,12 @@ void AInteractLever::Tick(float DeltaTime)
 void AInteractLever::Interact()
 {
 	if (!bOverlapping) return;
+	if (TriggerActor == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Trigger Actor Not set!"));
+		return;
+	}
+	bool bIsDoor = Cast<ADoorTrigger>(TriggerActor) != nullptr;
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, TEXT("Using Interact Lever Interact Function"));
 	if (LeverMesh->GetComponentRotation().Pitch <= LeverOffRotation.Pitch)
 	{
@@ -53,19 +60,16 @@ void AInteractLever::Interact()
 		OnRotation.Pitch += 100.0f;
 		LeverMesh->SetRelativeRotation(OnRotation);			
 		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
+		TriggerActor->Trigger();
 	}
 	else
 	{
 		LeverMesh->SetRelativeRotation(LeverOffRotation);
 		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
+		if (bIsDoor) TriggerActor->DisableTrigger();
+		else TriggerActor->Trigger();
 	}
 	
-	if (TriggerActor == nullptr)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Trigger Actor Not set!"));
-		return;
-	}
-	TriggerActor->Trigger();
 }
 
 void AInteractLever::DisableTrigger()

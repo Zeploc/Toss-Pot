@@ -11,7 +11,6 @@ ATriggerPlatforms::ATriggerPlatforms()
 	Platform->SetCollisionObjectType(ECC_GameTraceChannel2);
 
 	MovementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("MovementAudioComponent"));
-	MovementAudioComponent->SetSound(MovingSound);
 }
 
 void ATriggerPlatforms::BeginPlay()
@@ -22,6 +21,7 @@ void ATriggerPlatforms::BeginPlay()
 	{
 		StartPostion2 = Platform2->GetActorLocation();
 	}
+	MovementAudioComponent->SetSound(MovingSound);
 }
 
 void ATriggerPlatforms::Tick(float DeltaTime)
@@ -42,7 +42,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			FVector DirectionFromCurrent = EndPostion1 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize(); 
 			FVector ResultVector = Direction + DirectionFromCurrent;
-			MovementAudioComponent->Play();
+			//MovementAudioComponent->Play();
 			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Current Result: " + ResultVector.ToString() + " Vectors (Current | Direction) " + DirectionFromCurrent.ToCompactString() + " | " + Direction.ToCompactString()));
 			if (ResultVector.GetAbs() == FVector::ZeroVector)
 			{
@@ -58,8 +58,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			FVector DirectionFromCurrent = StartPostion1 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize();
 			FVector ResultVector = -Direction + DirectionFromCurrent;
-			//UGameplayStatics::PlaySoundAtLocation(this, MovingSound, GetActorLocation());
-			MovementAudioComponent->Play();
+			//MovementAudioComponent->Play();
 			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Current Result: " + ResultVector.ToString() + " Vectors (Current | Direction) " + DirectionFromCurrent.ToCompactString() + " | " + Direction.ToCompactString()));
 			if (ResultVector.GetAbs() == FVector::ZeroVector)
 			{
@@ -88,6 +87,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			{
 				bPlatform2Move = false;
 				Platform2->SetActorLocation(EndPostion2);
+				MovementAudioComponent->Stop();
 			}
 		}
 		else
@@ -102,6 +102,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			{
 				bPlatform2Move = false;
 				Platform2->SetActorLocation(StartPostion2);
+				MovementAudioComponent->Stop();
 			}
 		}
 	}
@@ -113,6 +114,7 @@ void ATriggerPlatforms::Trigger()
 	bPlatform2DirectionForward = !bPlatform2DirectionForward;
 	bPlatform1Move = true;
 	bPlatform2Move = true;
+	MovementAudioComponent->Play();
 }
 
 void ATriggerPlatforms::DisableTrigger()
@@ -121,4 +123,5 @@ void ATriggerPlatforms::DisableTrigger()
 	bPlatform2DirectionForward = false;
 	bPlatform1Move = true;
 	bPlatform2Move = true;
+	MovementAudioComponent->Play();
 }

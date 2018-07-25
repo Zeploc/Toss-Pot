@@ -34,10 +34,18 @@ public:
 	UPROPERTY(EditAnywhere)
 		float MoveDistance = 200.0f;
 
+	UPROPERTY(EditAnywhere)
+		float MoveSpeed = 400.0f;
+
 	FVector StartPosition;
 
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* Door;
 
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* DoorFrame;
+
+	bool bOpen = false;
+	bool bClose = false;
 	
 };
