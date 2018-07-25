@@ -52,10 +52,12 @@ void AInteractLever::Interact()
 		FRotator OnRotation = LeverOffRotation;
 		OnRotation.Pitch += 100.0f;
 		LeverMesh->SetRelativeRotation(OnRotation);			
+		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 	}
 	else
 	{
 		LeverMesh->SetRelativeRotation(LeverOffRotation);
+		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 	}
 	
 	if (TriggerActor == nullptr)
