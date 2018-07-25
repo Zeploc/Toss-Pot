@@ -68,6 +68,7 @@ void APressurePlateButton::OverlapDelay()
 		MoveUp = true;
 		if (TriggerActor != nullptr) TriggerActor->DisableTrigger();
 		// Disable Sound
+		UGameplayStatics::PlaySoundAtLocation(this, ReleaseSound, GetActorLocation());
 		// Turn off light
 		ChangeLight(false);
 
@@ -93,7 +94,7 @@ void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, 
 		// Light Up
 		ChangeLight(true);
 		// Enable sound
-
+		UGameplayStatics::PlaySoundAtLocation(this, PressSound, GetActorLocation());
 	}
 }
 

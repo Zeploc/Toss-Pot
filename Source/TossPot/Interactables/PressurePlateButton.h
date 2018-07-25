@@ -36,6 +36,13 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 		class UStaticMeshComponent* Button;
 
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* PressSound;
+
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* ReleaseSound;
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -63,12 +70,4 @@ public:
 	
 	UMaterialInstanceDynamic* ButtonMID;
 
-	/*UPROPERTY(EditDefaultsOnly, Category = "Audio")
-		USoundCue* PressCue;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Audio")
-		USoundCue* ReleasedCue;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Audio")
-		UAudioComponent* ButtonAudioComponent;*/
 };
