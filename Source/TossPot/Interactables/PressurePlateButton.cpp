@@ -70,6 +70,8 @@ void APressurePlateButton::OverlapDelay()
 		// Disable Sound
 		// Turn off light
 		ChangeLight(false);
+
+		GEngine->AddOnScreenDebugMessage(-1, 4.00f, FColor::Orange, TEXT("Should Release " + FString::SanitizeFloat(NumOnButton)));
 	}
 }
 
@@ -78,12 +80,13 @@ void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, 
 	if (OverlappedComp != Plate && OverlappedComp != Button && OtherActor != this)
 	{
 		NumOnButton++;
-		if (NumOnButton > 1) return;
 		if (GetWorldTimerManager().TimerExists(OverlapDelayHandler))
 		{
 			GetWorldTimerManager().ClearTimer(OverlapDelayHandler);
 			return;
 		}
+		if (NumOnButton > 1)
+			return;
 		Button->SetSimulatePhysics(true);
 		IsOverlapping = true;
 		MoveUp = false;
@@ -91,23 +94,31 @@ void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, 
 		// Light Up
 		ChangeLight(true);
 		// Enable sound
+
+		GEngine->AddOnScreenDebugMessage(-1, 4.00f, FColor::Orange, TEXT("Start overlap " + FString::SanitizeFloat(NumOnButton)));
 	}
 }
 
 void APressurePlateButton::OnButtonEndOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
-	if (NumOnButton > 0) NumOnButton--;
-	if (NumOnButton > 0) return;
-	IsOverlapping = false;
-	if (ReturnTime != 0.0f) GetWorldTimerManager().SetTimer(OverlapDelayHandler, this, &APressurePlateButton::OverlapDelay, ReturnTime, false);
-	else OverlapDelay();
+	if (OverlappedComp != Plate && OverlappedComp != Button && OtherActor != this)
+	{
+		if (NumOnButton > 0) NumOnButton--;
+		if (NumOnButton > 0)
+		{
+			return;
+		}
+		IsOverlapping = false;
+		if (ReturnTime != 0.0f) GetWorldTimerManager().SetTimer(OverlapDelayHandler, this, &APressurePlateButton::OverlapDelay, ReturnTime, false);
+		else OverlapDelay();
+		GEngine->AddOnScreenDebugMessage(-1, 4.00f, FColor::Orange, TEXT("End overlap " + FString::SanitizeFloat(NumOnButton)));
+	}
 }
 
 // Called every frame
 void APressurePlateButton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
 	if (MoveUp == true && IsOverlapping == false)
 	{
 		
