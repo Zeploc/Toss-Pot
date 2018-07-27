@@ -30,6 +30,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 	
 	if (bPlatform1Move)
 	{
+
 		FVector Direction = (EndPostion1 - StartPostion1);
 		Direction.Normalize();
 		FVector CurrentPlatformLocation = GetActorLocation();
@@ -42,13 +43,17 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			FVector DirectionFromCurrent = EndPostion1 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize(); 
 			FVector ResultVector = Direction + DirectionFromCurrent;
-			//MovementAudioComponent->Play();
-			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Current Result: " + ResultVector.ToString() + " Vectors (Current | Direction) " + DirectionFromCurrent.ToCompactString() + " | " + Direction.ToCompactString()));
-			if (ResultVector.GetAbs() == FVector::ZeroVector)
+			
+			if (ResultVector.Size() <= 0.2f)
 			{
 				bPlatform1Move = false;
 				SetActorLocation(EndPostion1);
 				MovementAudioComponent->Stop();
+				//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Stopping"));
+			}
+			else
+			{
+				//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Current Result size: " + FString::SanitizeFloat(ResultVector.Size()) + " Vectors (Current | Direction) " + DirectionFromCurrent.ToCompactString() + " | " + Direction.ToCompactString()));
 			}
 		}
 		else
@@ -58,14 +63,16 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 			FVector DirectionFromCurrent = StartPostion1 - CurrentPlatformLocation;
 			DirectionFromCurrent.Normalize();
 			FVector ResultVector = -Direction + DirectionFromCurrent;
-			//MovementAudioComponent->Play();
-			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Current Result: " + ResultVector.ToString() + " Vectors (Current | Direction) " + DirectionFromCurrent.ToCompactString() + " | " + Direction.ToCompactString()));
-			if (ResultVector.GetAbs() == FVector::ZeroVector)
+			
+			if (ResultVector.Size() <= 0.2f)
 			{
 				bPlatform1Move = false;
 				SetActorLocation(StartPostion1);
 				MovementAudioComponent->Stop();
+				//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Stopping"));
 			}
+			//else
+				//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Current Result size: " + FString::SanitizeFloat(ResultVector.Size()) + " Vectors (Current | Direction) " + DirectionFromCurrent.ToCompactString() + " | " + Direction.ToCompactString()));
 		}
 	}
 
@@ -88,6 +95,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 				bPlatform2Move = false;
 				Platform2->SetActorLocation(EndPostion2);
 				MovementAudioComponent->Stop();
+				GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Stopping"));
 			}
 		}
 		else
@@ -103,6 +111,7 @@ void ATriggerPlatforms::Tick(float DeltaTime)
 				bPlatform2Move = false;
 				Platform2->SetActorLocation(StartPostion2);
 				MovementAudioComponent->Stop();
+				GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, TEXT("Stopping"));
 			}
 		}
 	}
