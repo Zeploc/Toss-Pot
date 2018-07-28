@@ -105,4 +105,10 @@ void ACameraMovement::Tick(float DeltaTime)
 	}	
 }
 
+void ACameraMovement::SetControllersView()
+{
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetViewTargetWithBlend(this);
+	UGameplayStatics::GetPlayerController(GetWorld(), 1)->SetViewTargetWithBlend(this);
+}
+
 

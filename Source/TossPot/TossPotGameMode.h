@@ -16,7 +16,9 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		class ACameraMovement* CameraMovement;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class ATossPotCharacter* Player1;
@@ -31,6 +33,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		float CurrentDanger = 1.0f;
+
+	void SwitchPlayers();
 
 protected:
 	// Called when the game starts or when spawned

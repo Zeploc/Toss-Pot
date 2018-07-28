@@ -1,7 +1,7 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #include "TossPotGameMode.h"
-
+#include "TossPot/Player/CameraMovement.h"
 #include "TossPotCharacter.h"
 #include "Engine.h"
 
@@ -9,6 +9,28 @@ ATossPotGameMode::ATossPotGameMode()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+}
+
+void ATossPotGameMode::SwitchPlayers()
+{
+	UWorld* WorldRef = GetWorld();
+	bool Player1Character1 = Player1 == UGameplayStatics::GetPlayerCharacter(WorldRef, 0);
+	UGameplayStatics::GetPlayerController(WorldRef, 0)->UnPossess();
+	UGameplayStatics::GetPlayerController(WorldRef, 1)->UnPossess();
+	if (Player1Character1)
+	{
+		UGameplayStatics::GetPlayerController(WorldRef, 0)->Possess(Player2);
+		UGameplayStatics::GetPlayerController(WorldRef, 1)->Possess(Player1);
+	}
+	else
+	{
+		UGameplayStatics::GetPlayerController(WorldRef, 0)->Possess(Player1);
+		UGameplayStatics::GetPlayerController(WorldRef, 1)->Possess(Player2);
+	}
+	FVector Player1Location = Player1->GetActorLocation();
+	Player1->SetActorLocation(Player2->GetActorLocation());
+	Player2->SetActorLocation(Player1Location);
+	CameraMovement->SetControllersView();
 }
 
 void ATossPotGameMode::BeginPlay()

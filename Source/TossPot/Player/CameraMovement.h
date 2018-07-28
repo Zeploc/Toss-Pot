@@ -52,4 +52,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		float DistanceMaxY = 400;
 
+
+	UFUNCTION(BlueprintCallable)
+		void SetControllersView();
 };
