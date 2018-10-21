@@ -21,7 +21,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly)
 		UStaticMeshComponent* PadMesh;
 
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 		class UBoxComponent* TriggerBox;
 
 
