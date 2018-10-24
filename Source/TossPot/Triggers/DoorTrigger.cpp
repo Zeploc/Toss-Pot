@@ -31,24 +31,26 @@ void ADoorTrigger::Tick(float DeltaTime)
 	FVector CurrentPos = Door->GetComponentLocation();// GetActorLocation();
 	if (bOpen)
 	{
-		if (CurrentPos.Z < StartPosition.Z + MoveDistance)
+		if (FVector::Distance(CurrentPos, StartPosition) < MoveDistance)
+		//if (CurrentPos.Z < StartPosition.Z + MoveDistance)
 		{
-			CurrentPos.Z += MoveSpeed * DeltaTime;
+			CurrentPos += GetActorUpVector() * MoveSpeed * DeltaTime;
 			Door->SetWorldLocation(CurrentPos);// SetActorLocation(CurrentPos);
 		}
 		else
 		{
 			FVector NewPosition = StartPosition;
-			NewPosition.Z += MoveDistance;
+			NewPosition += GetActorUpVector() * MoveDistance;
 			Door->SetWorldLocation(NewPosition);  //SetActorLocation(NewPosition);
 			bOpen = false;
 		}
 	}
 	else if (bClose)
 	{
-		if (CurrentPos.Z > StartPosition.Z)
+		if (FVector::DotProduct(CurrentPos - StartPosition, GetActorUpVector()) > 0)
+		//if (CurrentPos.Z > StartPosition.Z)
 		{
-			CurrentPos.Z -= MoveSpeed * DeltaTime;
+			CurrentPos -= GetActorUpVector() * MoveSpeed * DeltaTime;
 			Door->SetWorldLocation(CurrentPos); //SetActorLocation(CurrentPos);
 		}
 		else
