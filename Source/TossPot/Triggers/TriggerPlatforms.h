@@ -35,6 +35,9 @@ public:
 		UStaticMeshComponent* Platform;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UStaticMeshComponent* Rail;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* Platform2;
 
 	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
@@ -43,6 +46,7 @@ public:
 	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
 		UAudioComponent* MovementAudioComponent;
 
+	FVector RailPosition;
 	FVector StartPostion1;
 	FVector StartPostion2;
 

@@ -7,10 +7,17 @@
 
 ATriggerPlatforms::ATriggerPlatforms()
 {
+	
+
 	Platform = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Platform 1"));
 	Platform->SetCollisionObjectType(ECC_GameTraceChannel2);
 
 	MovementAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("MovementAudioComponent"));
+
+	Rail = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Rail"));
+
+	Rail->SetupAttachment(RootComponent);
+
 }
 
 void ATriggerPlatforms::BeginPlay()
