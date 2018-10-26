@@ -6,6 +6,7 @@
 #include "TossPotCharacter.h"
 #include "PotCharacter.generated.h"
 
+
 /**
  * 
  */
@@ -22,7 +23,11 @@ protected:
 	void PotJump();
 	void PotStopJump();
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
+		class UParticleSystemComponent* ParticleSystem;
 public:
+
+	APotCharacter();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
