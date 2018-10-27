@@ -6,6 +6,7 @@
 
 #include "Engine/StaticMesh.h"
 #include "Triggers/TriggerActor.h"
+#include "TossPotCharacter.h"
 
 // Sets default values
 APressurePlateButton::APressurePlateButton()
@@ -13,28 +14,32 @@ APressurePlateButton::APressurePlateButton()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
+	//RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Boy"));
 	Plate = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Plate Contianer Mesh"));
 	Button = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Button Mesh"));
-	CylinderCollider = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cylinder Collider Mesh"));
+	BoxTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("Cylinder Collider Mesh"));
+	SetRootComponent(Plate);// RootComponent);
+	//Plate->SetupAttachment(RootComponent);
 	Button->SetupAttachment(Plate);
 	Button->RelativeLocation = FVector(0.0f, 0.0f, 30.0f);
-	Button->SetWorldScale3D(FVector(0.9f, 0.9f, 0.9f));
+	Button->SetConstraintMode(EDOFMode::SixDOF);
+	
 
-	CylinderCollider->SetWorldScale3D(FVector(1.7f, 1.7f, 0.45f));
-	CylinderCollider->SetRelativeLocation(FVector(0.0f, 0.0f, 23.0f));
-	CylinderCollider->SetVisibility(false);
-	CylinderCollider->SetCollisionProfileName("OverlapAll");
-	CylinderCollider->SetupAttachment(Button);
+	BoxTrigger->SetWorldScale3D(FVector(1.7f, 1.7f, 0.45f));
+	BoxTrigger->SetRelativeLocation(FVector(0.0f, 0.0f, 23.0f));
+	BoxTrigger->SetVisibility(false);
+	BoxTrigger->SetCollisionProfileName("OverlapAll");
+	BoxTrigger->SetupAttachment(Button);
 	
 	Plate->SetMobility(EComponentMobility::Static);
 	Button->SetMobility(EComponentMobility::Movable);
 
 	Button->SetSimulatePhysics(false);
 
-	CylinderCollider->OnComponentBeginOverlap.AddDynamic(this, &APressurePlateButton::OnButtonOverlap);
-	CylinderCollider->OnComponentEndOverlap.AddDynamic(this, &APressurePlateButton::OnButtonEndOverlap);
+	BoxTrigger->OnComponentBeginOverlap.AddDynamic(this, &APressurePlateButton::OnButtonOverlap);
+	BoxTrigger->OnComponentEndOverlap.AddDynamic(this, &APressurePlateButton::OnButtonEndOverlap);
 
-	Button->SetAbsolute(false, true, true);
+	//Button->SetAbsolute(false, true, true);
 }
 
 // Called when the game starts or when spawned
@@ -77,7 +82,8 @@ void APressurePlateButton::OverlapDelay()
 
 void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OverlappedComp != Plate && OverlappedComp != Button && OtherActor != this)
+	
+	if (OverlappedComp != Plate && OverlappedComp != Button && OtherActor != this && Cast <ATossPotCharacter>(OtherActor))
 	{
 		NumOnButton++;
 		if (GetWorldTimerManager().TimerExists(OverlapDelayHandler))
@@ -100,7 +106,7 @@ void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, 
 
 void APressurePlateButton::OnButtonEndOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
-	if (OverlappedComp != Plate && OverlappedComp != Button && OtherActor != this)
+	if (OverlappedComp != Plate && OverlappedComp != Button && OtherActor != this && Cast <ATossPotCharacter>(OtherActor))
 	{
 		if (NumOnButton > 0) NumOnButton--;
 		if (NumOnButton > 0)

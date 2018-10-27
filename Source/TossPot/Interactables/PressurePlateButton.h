@@ -13,11 +13,11 @@ class TOSSPOT_API APressurePlateButton : public AActor
 
 
 	UPROPERTY(VisibleDefaultsOnly)
-		class UStaticMeshComponent* CylinderCollider;
+		class UBoxComponent* BoxTrigger;
 
 	UPROPERTY(EditAnywhere)
 		class ATriggerActor* TriggerActor;
-	
+		
 
 	UFUNCTION()
 		void OnButtonOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

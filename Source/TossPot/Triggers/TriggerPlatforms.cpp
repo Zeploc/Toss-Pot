@@ -18,6 +18,8 @@ ATriggerPlatforms::ATriggerPlatforms()
 
 	Rail->SetupAttachment(RootComponent);
 
+	Rail->bAbsoluteLocation = true;
+
 }
 
 void ATriggerPlatforms::BeginPlay()

@@ -24,6 +24,8 @@ ASwitchPlayersPad::ASwitchPlayersPad()
 
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ASwitchPlayersPad::OnTriggerOverlap);
 	TriggerBox->OnComponentEndOverlap.AddDynamic(this, &ASwitchPlayersPad::OnTriggerEndOverlap);
+	TriggerBox->SetupAttachment(PadMesh);
+	TriggerBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 
 }
 // Called when the game starts or when spawned
