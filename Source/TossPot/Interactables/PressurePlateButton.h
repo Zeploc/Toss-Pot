@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interactables/InteractActor.h"
 #include "PressurePlateButton.generated.h"
 
 UCLASS()
@@ -55,7 +56,8 @@ protected:
 	FTimerHandle OverlapDelayHandler;
 	void OverlapDelay();
 	FTimerHandle TriggerDelayHandler;
-	void TriggerDelay();
+	void Trigger();
+	void ReleaseTrigger();
 
 	FVector OriginalButtonPosition;
 	
@@ -67,6 +69,11 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ReturnTime = 0.25f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EInteractMode InteractMode = EInteractMode::EI_HOLD;
+
+	bool Activated = false;
 	
 	UMaterialInstanceDynamic* ButtonMID;
 

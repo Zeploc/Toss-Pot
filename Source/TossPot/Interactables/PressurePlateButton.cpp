@@ -69,15 +69,60 @@ void APressurePlateButton::OverlapDelay()
 	if (IsOverlapping == false)
 	{
 		GetWorldTimerManager().ClearTimer(OverlapDelayHandler);
-		Button->SetSimulatePhysics(false);
-		MoveUp = true;
-		if (TriggerActor != nullptr) TriggerActor->DisableTrigger();
-		// Disable Sound
-		UGameplayStatics::PlaySoundAtLocation(this, ReleaseSound, GetActorLocation());
-		// Turn off light
-		ChangeLight(false);
-
+		ReleaseTrigger();
 	}
+}
+
+void APressurePlateButton::Trigger()
+{
+	if (InteractMode == EInteractMode::EI_ONEOFF && Activated) // One off and already triggered
+		return;
+
+	Button->SetSimulatePhysics(true);
+	MoveUp = false;
+	Activated = true;
+	if (TriggerActor != nullptr)
+	{
+		if (InteractMode == EInteractMode::EI_TOGGLE && Activated) // Toggle and already activated
+		{
+			Activated = false;
+			TriggerActor->Toggle(); // Toggle
+			//TriggerActor->DisableTrigger(); // Disable
+		}
+		else if (InteractMode == EInteractMode::EI_ONEOFF)
+		{
+			if (TriggerActor->Triggered) // If is one off and is already triggered (from another interact actor)
+				TriggerActor->DisableTrigger();
+			else // One off trigger
+				TriggerActor->Trigger();
+		}
+		else if (!TriggerActor->Triggered)
+			TriggerActor->Trigger(); // normal enable
+	}
+	// Light Up
+	ChangeLight(true);
+	// Enable sound
+	UGameplayStatics::PlaySoundAtLocation(this, PressSound, GetActorLocation());
+
+}
+
+void APressurePlateButton::ReleaseTrigger()
+{
+	if (InteractMode == EInteractMode::EI_ONEOFF && Activated) // One off don't release
+		return;
+
+	Button->SetSimulatePhysics(false);
+	MoveUp = true;
+	// Disable Sound
+	UGameplayStatics::PlaySoundAtLocation(this, ReleaseSound, GetActorLocation());
+	// Turn off light
+	ChangeLight(false);
+
+	if (TriggerActor != nullptr && InteractMode != EInteractMode::EI_TOGGLE) // If not toggle, can disable trigger
+	{
+		TriggerActor->DisableTrigger();
+	}
+	Activated = false;
 }
 
 void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -93,14 +138,9 @@ void APressurePlateButton::OnButtonOverlap(UPrimitiveComponent* OverlappedComp, 
 		}
 		if (NumOnButton > 1)
 			return;
-		Button->SetSimulatePhysics(true);
+
 		IsOverlapping = true;
-		MoveUp = false;
-		if (TriggerActor != nullptr) TriggerActor->Trigger();
-		// Light Up
-		ChangeLight(true);
-		// Enable sound
-		UGameplayStatics::PlaySoundAtLocation(this, PressSound, GetActorLocation());
+		Trigger();
 	}
 }
 

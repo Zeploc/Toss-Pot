@@ -6,6 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "InteractActor.generated.h"
 
+UENUM(BlueprintType)
+enum class EInteractMode : uint8
+{
+	EI_HOLD UMETA(DisplayName = "Hold"),
+	EI_ONEOFF UMETA(DisplayName = "One Off"),
+	EI_TOGGLE UMETA(DisplayName = "Toggle"),
+};
+
 UCLASS()
 class TOSSPOT_API AInteractActor : public AActor
 {
@@ -19,10 +27,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact();
+
+	void Enable();
+	void Disable();
+	void Toggle();
+
+	bool bEnabled = false;
 	
 };

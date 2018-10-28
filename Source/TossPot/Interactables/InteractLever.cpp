@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Triggers/TriggerActor.h"
 #include "Triggers/DoorTrigger.h"
+#include "TossPotCharacter.h"
 #include "Engine.h"
 
 
@@ -81,10 +82,12 @@ void AInteractLever::DisableTrigger()
 
 void AInteractLever::OnLeverOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	bOverlapping = true;
+	if (Cast<ATossPotCharacter>(OtherActor))
+		bOverlapping = true;
 }
 
 void AInteractLever::OnLeverEndOverlap(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
-	bOverlapping = false;
+	if (Cast<ATossPotCharacter>(OtherActor))
+		bOverlapping = false;
 }

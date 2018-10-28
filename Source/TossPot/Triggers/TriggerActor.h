@@ -25,5 +25,8 @@ public:
 
 	virtual void Trigger();
 	virtual void DisableTrigger();
+	void Toggle();
+
+	bool Triggered = false;
 	
 };

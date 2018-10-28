@@ -63,6 +63,7 @@ void ADoorTrigger::Tick(float DeltaTime)
 
 void ADoorTrigger::Trigger()
 {	
+	ATriggerActor::Trigger();
 	/*FVector NewPosition = StartPosition;
 	NewPosition.Z += MoveDistance;
 	SetActorLocation(NewPosition);*/
@@ -75,6 +76,7 @@ void ADoorTrigger::Trigger()
 
 void ADoorTrigger::DisableTrigger()
 {
+	ATriggerActor::DisableTrigger();
 	if (NumOfTriggered > 0 ) NumOfTriggered--;
 	GEngine->AddOnScreenDebugMessage(-1, 5.000f, FColor::Orange, TEXT("[Disable] Current Door Number " + FString::SanitizeFloat(NumOfTriggered)));
 	if (NumOfTriggered == 0)

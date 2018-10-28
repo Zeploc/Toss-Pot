@@ -28,12 +28,21 @@ void ATriggerActor::Tick(float DeltaTime)
 // Called every frame
 void ATriggerActor::Trigger()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, TEXT("Using base trigger (Trigger not set)"));
+	Triggered = true;
+	//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, TEXT("Using base trigger (Trigger not set)"));
 
 }
 // Called every frame
 void ATriggerActor::DisableTrigger()
 {
+	Triggered = false;
 
+}
 
+void ATriggerActor::Toggle()
+{
+	if (Triggered)
+		DisableTrigger();
+	else
+		Trigger();
 }
