@@ -71,14 +71,24 @@ void ATossPotCharacter::Tick(float DeltaTime)
 
 void ATossPotCharacter::MoveRight(float Value)
 {
+	const FRotator Rotation = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation();//GetViewTarget()->GetActorRotation();// Controller->GetControlRotation();
+
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+	// get right vector 
+	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	// add movement in that direction
-	AddMovementInput(FVector(1.f, 0.f, 0.f), Value);
+	AddMovementInput(Direction, Value);
 }
 
 void ATossPotCharacter::MoveUp(float Value)
 {
+	const FRotator Rotation = GetWorld()->GetFirstPlayerController()->PlayerCameraManager->GetCameraRotation();//GetViewTarget()->GetActorRotation();// Controller->GetControlRotation();
+
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+	// get forward vector
+	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	// add movement in that direction
-	AddMovementInput(FVector(0.f, -1.f, 0.f), Value);
+	AddMovementInput(Direction, Value);
 }
 
 void ATossPotCharacter::Interact()

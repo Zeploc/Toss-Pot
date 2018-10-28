@@ -2,7 +2,14 @@
 
 #include "PotCharacter.h"
 #include "Engine.h"
+#include "Particles/ParticleSystemComponent.h"
 
+APotCharacter::APotCharacter()
+{
+	ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle System Component"));
+	 
+	ParticleSystem->SetupAttachment(RootComponent);
+}
 
 void APotCharacter::Tick(float DeltaTime)
 {
