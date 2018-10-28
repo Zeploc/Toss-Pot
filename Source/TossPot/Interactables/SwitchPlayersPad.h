@@ -18,7 +18,7 @@ public:
 	// Sets default values for this actor's properties
 	ASwitchPlayersPad();
 
-	UPROPERTY(VisibleDefaultsOnly)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 		UStaticMeshComponent* PadMesh;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)

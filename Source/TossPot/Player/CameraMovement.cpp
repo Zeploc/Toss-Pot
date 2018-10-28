@@ -47,7 +47,8 @@ void ACameraMovement::Tick(float DeltaTime)
 		CurrentLocation.X = CenterPosition.X;
 		SetActorLocation(CurrentLocation);
 
-		FVector Distance = (Player1->GetActorLocation() - Player2->GetActorLocation()).GetAbs();
+		FVector Difference = Player1->GetActorLocation() - Player2->GetActorLocation();
+		FVector Distance = Difference.GetAbs();
 		
 
 		// Check player y distance is too far
@@ -60,7 +61,7 @@ void ACameraMovement::Tick(float DeltaTime)
 		bool bYHigherOffset = CenterPosition.Y > MaxPosY;
 		bool bYLowerOffset = CenterPosition.Y < MinPosY;
 
-		if (bTooFarY || bTooFarX || (bYHigherOffset || bYLowerOffset)) // or if players and too high or low
+		if (bTooFarY || bTooFarX || (bYHigherOffset || bYLowerOffset)) // or if players are too high or low
 		{
 			float YDifference = Distance.Y - DistanceMaxY;
 			float XDifference = Distance.X - CenterThreshold;
@@ -73,7 +74,7 @@ void ACameraMovement::Tick(float DeltaTime)
 				CurrentZoom = YDifference;
 
 
-			
+
 			if (bYHigherOffset || bYLowerOffset)
 			{
 				FVector CurrentPos = GetActorLocation();
@@ -88,6 +89,7 @@ void ACameraMovement::Tick(float DeltaTime)
 				SetActorLocation(CurrentPos);
 				
 			}
+
 			
 			float ratio = 0.4f;
 			CurrentZoom *= ratio;
@@ -102,6 +104,10 @@ void ACameraMovement::Tick(float DeltaTime)
 		}
 		//GEngine->AddOnScreenDebugMessage(-1, 0.001f, FColor::Orange, TEXT("Curren arm length " + FString::SanitizeFloat(CameraBoom->TargetArmLength)));
 
+		FVector CurrentPos = GetActorLocation();
+
+		CurrentPos.Z = (Player2->GetActorLocation() + Difference / 2).Z + ZHeight;
+		SetActorLocation(CurrentPos);
 	}	
 }
 

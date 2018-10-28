@@ -34,7 +34,7 @@ public:
 	UPROPERTY(VisibleDefaultsOnly)
 		UStaticMeshComponent* Platform;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		UStaticMeshComponent* Rail;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
