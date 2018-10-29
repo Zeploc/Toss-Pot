@@ -5,6 +5,7 @@
 #include "Components/PrimitiveComponent.h"
 #include "Player/PotCharacter.h"
 #include "Components/ArrowComponent.h"
+#include "Components/StaticMeshComponent.h"
 // Sets default values
 AMagneticWall::AMagneticWall()
 {
@@ -14,6 +15,9 @@ AMagneticWall::AMagneticWall()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	MagneticWall = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Magnet Wall"));
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
+	BoxCollision->SetupAttachment(RootComponent);
+	MagneticWall->SetupAttachment(RootComponent);
+	ArrowComponent->SetupAttachment(RootComponent);
 
 }
 
@@ -31,7 +35,7 @@ void AMagneticWall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (isOverlaping && isPot)
 	{
-		isPot->LaunchCharacter(ArrowComponent->GetForwardVector() * fPushBackForce *  -1, false, false);
+		isPot->LaunchCharacter(ArrowComponent->GetForwardVector() * fPushBackForce, false, false);
 	}
 }
 
