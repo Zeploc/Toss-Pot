@@ -8,13 +8,22 @@
 #include "Engine/World.h"
 #include "MovementPoint.h"
 
+#include "TossPotCharacter.h"
+
+#include "Engine.h"
+
 
 ASentryBot::ASentryBot()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	m_TBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Platform 1"));
 
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Base Root"));
+
+	m_TBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Platform 1"));
 	m_TBox->SetupAttachment(RootComponent);
+
+	m_SearchBox = CreateDefaultSubobject<UBoxComponent>(TEXT("SearchBox"));
+	m_SearchBox->SetupAttachment(RootComponent);
 }
 
 void ASentryBot::BeginPlay()
@@ -22,8 +31,13 @@ void ASentryBot::BeginPlay()
 	Super::BeginPlay();
 	//SphereCollision->OnComponentBeginOverlap.Clear();
 	//SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &AMovingCollectable::OnCompOverlap);
-	
-	m_TBox->OnComponentBeginOverlap.AddDynamic(this, &ASentryBot::OnBoxOverlapBegin);
+
+
+	m_TBox->OnComponentBeginOverlap.AddDynamic(this, &ASentryBot::OnOBoxOverlapBegin);
+
+	m_SearchBox->OnComponentBeginOverlap.AddDynamic(this, &ASentryBot::OnOBoxOverlapBegin);
+
+	m_SearchBox->OnComponentEndOverlap.AddDynamic(this, &ASentryBot::OnBoxOverlapEnd);
 
 	if (fMovementSpeed == 0.0f)
 	{
@@ -44,7 +58,7 @@ void ASentryBot::Tick(float DeltaTime)
 		//UE_LOG(LogTemp, Warning, TEXT("START MOVING"));
 		bMoving = true;
 	}
-	if (bMoving && bForward)
+	if (bMoving && bForward && !IsColliding)
 	{
 		for (int i = 0; i < MovementPoints.Num(); i++)
 		{
@@ -94,6 +108,7 @@ void ASentryBot::Tick(float DeltaTime)
 			}
 		}
 	}
+
 	if (iCurrentPoint > MovementPoints.Num() && bRepeating)
 	{
 		iCurrentPoint = 1;
@@ -101,14 +116,41 @@ void ASentryBot::Tick(float DeltaTime)
 	else if (iCurrentPoint > MovementPoints.Num())
 	{
 	}
+
+	if (IsColliding && Toss)
+	{
+		WarningTime -= DeltaTime;
+		AlertProtocol();
+		UE_LOG(LogTemp, Warning, TEXT("Colliding"));
+	}
+	if (IsColliding == false)
+	{
+		WarningTime = 2;
+	}
+
 }
 
-void ASentryBot::OnBoxOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void ASentryBot::AlertProtocol()
 {
+	if (WarningTime <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Warning time over"));
+		//Shoot that bitch
+	}
+
+
 }
 
-void ASentryBot::OnBoxOverlapEnd(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+
+void ASentryBot::OnOBoxOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
+	
+	IsColliding = true;
+}
+
+void ASentryBot::OnBoxOverlapEnd(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
+{
+	IsColliding = false;
 }
 
 
