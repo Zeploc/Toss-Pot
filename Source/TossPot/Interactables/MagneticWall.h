@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "Triggers/TriggerActor.h"
 #include "GameFramework/Actor.h"
 #include "MagneticWall.generated.h"
 
 
 
 UCLASS()
-class TOSSPOT_API AMagneticWall : public AActor
+class TOSSPOT_API AMagneticWall : public ATriggerActor
 {
 	GENERATED_BODY()
 

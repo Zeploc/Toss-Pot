@@ -35,7 +35,7 @@ void AMagneticWall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (isOverlaping && isPot)
 	{
-		isPot->LaunchCharacter(ArrowComponent->GetForwardVector() * fPushBackForce, false, false);
+		isPot->LaunchCharacter((ArrowComponent->GetForwardVector() * fPushBackForce * -1), false, false);
 	}
 }
 
