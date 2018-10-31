@@ -42,12 +42,22 @@ void AConveyorBelt::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (IsColliding && Toss)
+	if (IsColliding && Toss && Triggered)
 	{
 		FVector ForwardVector = GetActorForwardVector();
 		ForwardVector *= PushSpeed;
 		Toss->LaunchCharacter(ForwardVector, false, false);
 	}
+}
+
+void AConveyorBelt::Trigger()
+{
+	Triggered = true;
+}
+
+void AConveyorBelt::DisableTrigger()
+{
+	Triggered = true;
 }
 
 
