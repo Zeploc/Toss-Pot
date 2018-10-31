@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Triggers/TriggerActor.h"
 #include "ConveyorBelt.generated.h"
 
 UCLASS()
-class TOSSPOT_API AConveyorBelt : public AActor
+class TOSSPOT_API AConveyorBelt : public ATriggerActor
 {
 	GENERATED_BODY()
 	
@@ -34,8 +35,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void Trigger() override;
+	virtual void DisableTrigger()override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "fug")
 		float PushSpeed = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool Triggered = true;
 
 private:
 	bool IsColliding = false;
