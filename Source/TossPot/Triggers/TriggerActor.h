@@ -27,6 +27,7 @@ public:
 	virtual void DisableTrigger();
 	void Toggle();
 
-	bool Triggered = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool Triggered = false;
 	
 };

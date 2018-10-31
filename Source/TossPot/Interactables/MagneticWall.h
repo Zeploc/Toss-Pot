@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Triggers/TriggerActor.h"
 #include "GameFramework/Actor.h"
+#include "Triggers/TriggerActor.h"
+#include "Interactables/InteractActor.h"
 #include "MagneticWall.generated.h"
 
 
@@ -22,6 +23,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void Trigger();
+	virtual void DisableTrigger();
+
+
+
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -32,8 +39,6 @@ public:
 	UFUNCTION()
 		void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
-		UStaticMeshComponent* MagneticWall;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 		class UBoxComponent* BoxCollision;
@@ -43,9 +48,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float fPushBackForce = 500.0f;
+
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* MagneticActivate;
+
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* MagneticDeActivate;
+	
 private:
 
 	class ACharacter* isPot = nullptr;
 	bool isOverlaping = false;
-
 };
