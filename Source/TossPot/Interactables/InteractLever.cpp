@@ -3,6 +3,7 @@
 #include "InteractLever.h"
 
 #include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Triggers/TriggerActor.h"
 #include "Triggers/DoorTrigger.h"
 #include "TossPotCharacter.h"
@@ -15,12 +16,10 @@ AInteractLever::AInteractLever()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	LeverMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Lever Mesh"));
-	LeverMesh->SetCollisionProfileName("OverlapAll");
-	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
-	BaseMesh->SetCollisionProfileName("BlockAll");
+	LeverMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Lever Mesh"));
+	LeverMesh->SetCollisionProfileName("BlockAll");
 	Collision = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Collision Mesh"));
-	SetRootComponent(BaseMesh);
+	SetRootComponent(LeverMesh);
 
 	Collision->SetVisibility(false);
 	Collision->SetCollisionObjectType(ECC_GameTraceChannel1);
@@ -28,7 +27,6 @@ AInteractLever::AInteractLever()
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &AInteractLever::OnLeverOverlap);
 	Collision->OnComponentEndOverlap.AddDynamic(this, &AInteractLever::OnLeverEndOverlap);
 
-	LeverOffRotation = LeverMesh->GetComponentRotation();
 }
 
 // Called when the game starts or when spawned
@@ -47,7 +45,7 @@ void AInteractLever::Tick(float DeltaTime)
 
 void AInteractLever::Interact()
 {
-	if (!bOverlapping) return;
+	//if (!bOverlapping) return;
 	if (TriggerActor == nullptr)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Trigger Actor Not set!"));
@@ -55,17 +53,19 @@ void AInteractLever::Interact()
 	}
 	bool bIsDoor = Cast<ADoorTrigger>(TriggerActor) != nullptr;
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, TEXT("Using Interact Lever Interact Function"));
-	if (LeverMesh->GetComponentRotation().Pitch <= LeverOffRotation.Pitch)
+	if (!bEnabled)
 	{
-		FRotator OnRotation = LeverOffRotation;
+		bEnabled = true;
+		/*FRotator OnRotation = LeverOffRotation;
 		OnRotation.Pitch += 100.0f;
-		LeverMesh->SetRelativeRotation(OnRotation);			
+		LeverMesh->SetRelativeRotation(OnRotation);		*/	
 		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 		TriggerActor->Trigger();
 	}
 	else
 	{
-		LeverMesh->SetRelativeRotation(LeverOffRotation);
+		bEnabled = false;
+		/*LeverMesh->SetRelativeRotation(LeverOffRotation);*/
 		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 		if (bIsDoor) TriggerActor->DisableTrigger();
 		else TriggerActor->Trigger();

@@ -14,15 +14,14 @@ class TOSSPOT_API AInteractLever : public AInteractActor
 {
 	GENERATED_BODY()
 
-	
-	
-	UPROPERTY(VisibleDefaultsOnly)
-		UStaticMeshComponent* LeverMesh;
 
-	UPROPERTY(VisibleDefaultsOnly)
-		UStaticMeshComponent* BaseMesh;
+public:
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
+		class USkeletalMeshComponent* LeverMesh;
 
-	UPROPERTY(VisibleDefaultsOnly)
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 		UStaticMeshComponent* Collision;
 
 
@@ -32,6 +31,10 @@ class TOSSPOT_API AInteractLever : public AInteractActor
 	UPROPERTY(EditAnywhere)
 		float DelayTime = 0;
 
+	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
+		class USoundBase* ClickSound;
+
+private:
 	bool bOverlapping = false;
 	
 	FRotator LeverOffRotation;
@@ -42,10 +45,7 @@ class TOSSPOT_API AInteractLever : public AInteractActor
 	UFUNCTION()
 		void OnLeverEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-public:
 
-	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
-		class USoundBase* ClickSound;
 
 public:
 	// Sets default values for this actor's properties
@@ -62,5 +62,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void Interact();
+	virtual void Interact() override;
 };

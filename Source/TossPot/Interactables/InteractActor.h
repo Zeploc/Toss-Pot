@@ -34,10 +34,7 @@ public:
 
 	virtual void Interact();
 
-	void Enable();
-	void Disable();
-	void Toggle();
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bEnabled = false;
 	
 };

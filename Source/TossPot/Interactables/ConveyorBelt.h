@@ -40,8 +40,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "fug")
 		float PushSpeed = 100.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool Triggered = true;
 
 private:
 	bool IsColliding = false;
