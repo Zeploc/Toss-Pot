@@ -13,10 +13,8 @@ AMagneticWall::AMagneticWall()
 	PrimaryActorTick.bCanEverTick = true;
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
-	MagneticWall = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Magnet Wall"));
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	BoxCollision->SetupAttachment(RootComponent);
-	MagneticWall->SetupAttachment(RootComponent);
 	ArrowComponent->SetupAttachment(RootComponent);
 
 }
@@ -25,18 +23,40 @@ AMagneticWall::AMagneticWall()
 void AMagneticWall::BeginPlay()
 {
 	Super::BeginPlay();
+
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AMagneticWall::OnOverlapBegin);
 	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &AMagneticWall::OnOverlapEnd);
+}
+
+void AMagneticWall::Trigger()
+{
+	ATriggerActor::Trigger();
+	//Animation for when the magnet wall is disabled here
+}
+
+void AMagneticWall::DisableTrigger()
+{
+	ATriggerActor::DisableTrigger();
+	//Animation for when the magnet wall is enable go here
 }
 
 // Called every frame
 void AMagneticWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (isOverlaping && isPot)
+	if (!Triggered)
 	{
-		isPot->LaunchCharacter(ArrowComponent->GetForwardVector() * fPushBackForce, false, false);
+		//DisableTrigger();
+		if (isOverlaping && isPot)
+		{
+			isPot->LaunchCharacter((ArrowComponent->GetForwardVector() * fPushBackForce), false, false);
+		}
 	}
+	/*else if (ATriggerActor::Triggered)
+	{
+		Trigger();
+	}*/
+	
 }
 
 void AMagneticWall::OnOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
@@ -57,4 +77,6 @@ void AMagneticWall::OnOverlapEnd(UPrimitiveComponent * OverlappedComp, AActor * 
 		isOverlaping = false;
 	}
 }
+
+
 
