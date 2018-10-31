@@ -31,24 +31,15 @@ public:
 	virtual void Trigger();
 	virtual void DisableTrigger();
 	
-	UPROPERTY(EditAnywhere)
-		float MoveDistance = 300.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float OpeningSpeed = 1.0f;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
+		class USkeletalMeshComponent* Door;
 
-	UPROPERTY(EditAnywhere)
-		float MoveSpeed = 400.0f;
-
-	FVector StartPosition;
-
-	UPROPERTY(VisibleDefaultsOnly)
-		UStaticMeshComponent* Door;
-
-	UPROPERTY(VisibleDefaultsOnly)
-		UStaticMeshComponent* DoorFrame;
 
 	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
 		class USoundBase* MoveSound;
 
-	bool bOpen = false;
-	bool bClose = false;
 	
 };
