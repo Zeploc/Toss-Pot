@@ -8,7 +8,7 @@
 #include <vector>
 #include "GameFramework/Actor.h"
 #include "Checkpoint.generated.h"
-#include "Runtime/Core/Public/Math/TransformNonVectorized.h"
+
 
 
 UCLASS()
@@ -27,21 +27,28 @@ public:
 		void OnBoxOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		std::vector<AActor> * ArrayOfActors;
+		TArray<AActor*> ArrayOfActors;
+
+	
+	
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY(BlueprintReadOnly)
 	bool TossIsColliding = false;
+	UPROPERTY(BlueprintReadOnly)
 	bool PotIsColliding = false;
 	class APotCharacter* Pot;
 	class ATossCharacter* Toss;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class UBoxComponent* m_TBox;
-	class ATossCharacter = Toss;
-	class APotCharacter = Pot;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class UTransform* m_CurrentCheckPointTransform;
+		FVector m_CurrentCheckPointPosition;
+
+	UFUNCTION(BlueprintCallable)
+		void Respawn(class ATossPotCharacter* Player);
 
 public:	
 	// Called every frame

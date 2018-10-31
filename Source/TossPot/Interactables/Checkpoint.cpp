@@ -7,6 +7,8 @@
 
 
 #include "TossPotCharacter.h"
+#include "Player/TossCharacter.h"
+#include "Player/PotCharacter.h"
 
 #include "Engine.h"
 
@@ -24,14 +26,6 @@ ACheckpoint::ACheckpoint()
 
 }
 
-void ACheckpoint::OnOBoxOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
-{
-}
-
-void ACheckpoint::OnBoxOverlapEnd(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
-{
-}
-
 // Called when the game starts or when spawned
 void ACheckpoint::BeginPlay()
 {
@@ -39,9 +33,12 @@ void ACheckpoint::BeginPlay()
 
 	m_TBox->OnComponentBeginOverlap.AddDynamic(this, &ACheckpoint::OnOBoxOverlapBegin);
 	m_TBox->OnComponentEndOverlap.AddDynamic(this, &ACheckpoint::OnBoxOverlapEnd);
-
-
 	
+}
+
+void ACheckpoint::Respawn(ATossPotCharacter * Player)
+{
+	Player->SetActorLocation(m_CurrentCheckPointPosition);
 }
 
 // Called every frame
@@ -51,7 +48,7 @@ void ACheckpoint::Tick(float DeltaTime)
 
 	if (TossIsColliding && PotIsColliding)
 	{
-		m_CurrentCheckPointTransform = this->GetActorTransform;
+		m_CurrentCheckPointPosition = GetActorLocation();
 	}
 }
 
