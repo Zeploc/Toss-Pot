@@ -57,7 +57,7 @@ void AConveyorBelt::Trigger()
 
 void AConveyorBelt::DisableTrigger()
 {
-	Triggered = true;
+	Triggered = false;
 }
 
 
