@@ -2,7 +2,7 @@
 
 #include "InteractLever.h"
 
-#include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Triggers/TriggerActor.h"
 #include "Triggers/DoorTrigger.h"
@@ -18,10 +18,10 @@ AInteractLever::AInteractLever()
 
 	LeverMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Lever Mesh"));
 	LeverMesh->SetCollisionProfileName("BlockAll");
-	Collision = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Collision Mesh"));
+	Collision = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger Interact Trigger"));
 	SetRootComponent(LeverMesh);
 
-	Collision->SetVisibility(false);
+	//Collision->SetVisibility(false);
 	Collision->SetCollisionObjectType(ECC_GameTraceChannel1);
 
 	Collision->OnComponentBeginOverlap.AddDynamic(this, &AInteractLever::OnLeverOverlap);

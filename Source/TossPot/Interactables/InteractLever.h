@@ -22,7 +22,7 @@ public:
 
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
-		UStaticMeshComponent* Collision;
+		class UBoxComponent* Collision;
 
 
 	UPROPERTY(EditAnywhere)
