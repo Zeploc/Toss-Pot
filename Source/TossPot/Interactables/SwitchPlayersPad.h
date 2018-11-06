@@ -19,7 +19,7 @@ public:
 	ASwitchPlayersPad();
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
-		UStaticMeshComponent* PadMesh;
+		class USkeletalMeshComponent* PadMesh;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 		class UBoxComponent* TriggerBox;

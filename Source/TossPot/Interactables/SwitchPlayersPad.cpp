@@ -3,7 +3,7 @@
 #include "SwitchPlayersPad.h"
 
 #include "Components/BoxComponent.h"
-#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Engine/World.h"
 #include "TossPotGameMode.h"
@@ -18,7 +18,7 @@ ASwitchPlayersPad::ASwitchPlayersPad()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	PadMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Pad Mesh"));
+	PadMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Pad Mesh"));
 	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger Box"));
 	SetRootComponent(PadMesh);
 
