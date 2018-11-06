@@ -50,7 +50,7 @@ void ASwitchPlayersPad::OnTriggerEndOverlap(UPrimitiveComponent * OverlappedComp
 	if (Cast<ATossPotCharacter>(OtherActor))
 	{
 		Overlapped = false;
-		Enabled = false;
+		bEnabled = false;
 		ButtonMID->SetScalarParameterValue("Lit", 0.0f);
 	}
 }
@@ -60,8 +60,8 @@ void ASwitchPlayersPad::Interact()
 	if (Overlapped)
 	{
 		ButtonMID->SetScalarParameterValue("Lit", 1.0f);
-		Enabled = true;
-		if (OtherSwitch->Enabled)
+		bEnabled = true;
+		if (OtherSwitch->bEnabled)
 		{
 			Cast<ATossPotGameMode>(GetWorld()->GetAuthGameMode())->SwitchPlayers();
 		}
