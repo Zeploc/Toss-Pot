@@ -31,8 +31,9 @@ public:
 	UFUNCTION()
 		void OnTriggerEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 	bool Overlapped = false;
-	bool Enabled = false;
+
 
 	UMaterialInstanceDynamic* ButtonMID;
 	
