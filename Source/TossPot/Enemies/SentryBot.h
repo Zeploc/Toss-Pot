@@ -39,7 +39,16 @@ public:
 
 	TArray<class UMovementPoint*> MovementPoints;
 
+	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float WarningTime = 2;
+
 protected:
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class USpotLightComponent* SpotLight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class UBoxComponent* m_TBox;
@@ -49,14 +58,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class UBoxComponent* m_SearchBox;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<class ABullet> BulletClass;
+
 	ASentryBot();
 private:
 	bool IsColliding = false;
 	FVector OriginLocation;
 	int iCurrentPoint;
 	bool bMoving = false;
-	class ATossPotCharacter* Toss; // Could be wrong class
-	int WarningTime = 2;
+	class ATossPotCharacter* TossPot; // Could be wrong class
+
+
+	
 
 	void MoveTowards(FVector _location, float DeltaTime);
 	bool bForward;

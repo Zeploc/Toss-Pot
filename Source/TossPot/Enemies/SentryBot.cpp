@@ -4,9 +4,11 @@
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
-
+#include "Components/SpotLightComponent.h"
+#include "Enemies/Bullet.h"
 #include "Engine/World.h"
 #include "MovementPoint.h"
+//#include "Classes/Engine/SpotLight.h"
 
 #include "TossPotCharacter.h"
 
@@ -24,6 +26,9 @@ ASentryBot::ASentryBot()
 
 	m_SearchBox = CreateDefaultSubobject<UBoxComponent>(TEXT("SearchBox"));
 	m_SearchBox->SetupAttachment(RootComponent);
+
+	SpotLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight 1"));
+	SpotLight->SetupAttachment(RootComponent);
 }
 
 void ASentryBot::BeginPlay()
@@ -58,7 +63,7 @@ void ASentryBot::Tick(float DeltaTime)
 		//UE_LOG(LogTemp, Warning, TEXT("START MOVING"));
 		bMoving = true;
 	}
-	if (bMoving && bForward && !IsColliding)
+	if (bMoving && bForward)
 	{
 		for (int i = 0; i < MovementPoints.Num(); i++)
 		{
@@ -117,11 +122,12 @@ void ASentryBot::Tick(float DeltaTime)
 	{
 	}
 
-	if (IsColliding && Toss)
+	if (IsColliding /*&& TossPot*/)
 	{
 		WarningTime -= DeltaTime;
 		AlertProtocol();
-		UE_LOG(LogTemp, Warning, TEXT("Colliding"));
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, "Decrement");
+		
 	}
 	if (IsColliding == false)
 	{
@@ -135,6 +141,24 @@ void ASentryBot::AlertProtocol()
 	if (WarningTime <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning time over"));
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, "SHOOT THAT BICH");
+		//ABullet* NewBullet;
+		FVector Pos = TossPot->GetActorLocation();
+		FRotator Rot = TossPot->GetActorRotation();
+		 
+		ABullet* SpawnedBullet = Cast<ABullet>(GetWorld()->SpawnActor(BulletClass, &Pos, &Rot));
+
+		FVector SentryVector = GetActorLocation();
+		FVector TossPotVector = TossPot->GetActorLocation();
+		FVector Resultant = TossPotVector - SentryVector;
+		if (SpawnedBullet)
+		{
+			SpawnedBullet->ProjectileMotion->Velocity = Resultant;
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, "Could not cast to bullet");
+		}
 		//Shoot that bitch
 	}
 
@@ -144,8 +168,16 @@ void ASentryBot::AlertProtocol()
 
 void ASentryBot::OnOBoxOverlapBegin(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	
-	IsColliding = true;
+	ATossPotCharacter* IsACharacter = Cast<ATossPotCharacter>(OtherActor);
+
+	if (IsACharacter)
+	{
+		IsColliding = true;
+		
+		TossPot = IsACharacter;
+	}
+
+	//IsColliding = false;
 }
 
 void ASentryBot::OnBoxOverlapEnd(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
