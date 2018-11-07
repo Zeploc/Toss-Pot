@@ -32,6 +32,7 @@ void ATriggerActor::Trigger()
 	//GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, TEXT("Using base trigger (Trigger not set)"));
 
 }
+
 // Called every frame
 void ATriggerActor::DisableTrigger()
 {
@@ -45,4 +46,9 @@ void ATriggerActor::Toggle()
 		DisableTrigger();
 	else
 		Trigger();
+}
+
+void ATriggerActor::Reset()
+{
+	Triggered = false;
 }

@@ -9,6 +9,8 @@
 #include "TossPotCharacter.h"
 #include "Player/TossCharacter.h"
 #include "Player/PotCharacter.h"
+#include "Interactables/InteractActor.h"
+#include "Triggers/TriggerActor.h"
 
 #include "Engine.h"
 
@@ -49,6 +51,24 @@ void ACheckpoint::Tick(float DeltaTime)
 	if (TossIsColliding && PotIsColliding)
 	{
 		m_CurrentCheckPointPosition = GetActorLocation();
+	}
+}
+
+void ACheckpoint::Restart()
+{
+	for (int i = 0; i < ArrayOfActors.Num(); i++)
+	{
+		
+		AInteractActor* Interact = Cast<AInteractActor>(ArrayOfActors[i]);
+		ATriggerActor* Trigger = Cast< ATriggerActor>(ArrayOfActors[i]);
+		if (Interact)
+		{
+			Interact->Reset();
+		}
+		else if (Trigger)
+		{
+			Trigger->Reset();
+		}
 	}
 }
 

@@ -30,3 +30,8 @@ void AInteractActor::Interact()
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, TEXT("Using Base Interact (Interact Actor as no interact override)"));
 }
 
+void AInteractActor::Reset()
+{
+	bEnabled = false;
+}
+

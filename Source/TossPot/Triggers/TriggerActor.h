@@ -29,5 +29,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool Triggered = false;
+
+	UFUNCTION(BlueprintCallable)
+		virtual void Reset();
 	
 };

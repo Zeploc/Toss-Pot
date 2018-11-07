@@ -53,7 +53,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void Restart();
+
+	UFUNCTION(BlueprintCallable)
+		void Restart();
 	
 	
 };
