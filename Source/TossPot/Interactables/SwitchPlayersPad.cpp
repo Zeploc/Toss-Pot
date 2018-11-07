@@ -3,7 +3,7 @@
 #include "SwitchPlayersPad.h"
 
 #include "Components/BoxComponent.h"
-#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Engine/World.h"
 #include "TossPotGameMode.h"
@@ -18,7 +18,7 @@ ASwitchPlayersPad::ASwitchPlayersPad()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	PadMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Pad Mesh"));
+	PadMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Pad Mesh"));
 	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Trigger Box"));
 	SetRootComponent(PadMesh);
 
@@ -50,7 +50,7 @@ void ASwitchPlayersPad::OnTriggerEndOverlap(UPrimitiveComponent * OverlappedComp
 	if (Cast<ATossPotCharacter>(OtherActor))
 	{
 		Overlapped = false;
-		Enabled = false;
+		bEnabled = false;
 		ButtonMID->SetScalarParameterValue("Lit", 0.0f);
 	}
 }
@@ -60,8 +60,8 @@ void ASwitchPlayersPad::Interact()
 	if (Overlapped)
 	{
 		ButtonMID->SetScalarParameterValue("Lit", 1.0f);
-		Enabled = true;
-		if (OtherSwitch->Enabled)
+		bEnabled = true;
+		if (OtherSwitch->bEnabled)
 		{
 			Cast<ATossPotGameMode>(GetWorld()->GetAuthGameMode())->SwitchPlayers();
 		}
