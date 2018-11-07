@@ -36,5 +36,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bEnabled = false;
+
+	UFUNCTION(BlueprintCallable)
+		void Reset();
+
 	
 };
