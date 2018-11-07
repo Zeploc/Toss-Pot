@@ -42,6 +42,15 @@ APressurePlateButton::APressurePlateButton()
 	//Button->SetAbsolute(false, true, true);
 }
 
+void APressurePlateButton::Reset()
+{
+	IsOverlapping = false;
+	Activated = false;
+	MoveUp = false;
+	Button->SetRelativeLocation(OriginalButtonPosition);
+	Button->SetSimulatePhysics(false);
+}
+
 // Called when the game starts or when spawned
 void APressurePlateButton::BeginPlay()
 {

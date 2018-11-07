@@ -11,6 +11,7 @@
 #include "Player/PotCharacter.h"
 #include "Interactables/InteractActor.h"
 #include "Triggers/TriggerActor.h"
+#include "Interactables/PressurePlateButton.h"
 
 #include "Engine.h"
 
@@ -61,6 +62,7 @@ void ACheckpoint::Restart()
 		
 		AInteractActor* Interact = Cast<AInteractActor>(ArrayOfActors[i]);
 		ATriggerActor* Trigger = Cast< ATriggerActor>(ArrayOfActors[i]);
+		APressurePlateButton* PressurePlate = Cast< APressurePlateButton>(ArrayOfActors[i]);
 		if (Interact)
 		{
 			Interact->Reset();
@@ -68,6 +70,10 @@ void ACheckpoint::Restart()
 		else if (Trigger)
 		{
 			Trigger->Reset();
+		}
+		else if (PressurePlate)
+		{
+			PressurePlate->Reset();
 		}
 	}
 }

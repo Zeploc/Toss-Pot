@@ -43,6 +43,8 @@ public:
 	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
 		class USoundBase* ReleaseSound;
 
+	void Reset();
+
 
 protected:
 	// Called when the game starts or when spawned
