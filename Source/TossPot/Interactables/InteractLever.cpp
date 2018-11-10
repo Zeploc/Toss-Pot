@@ -56,16 +56,12 @@ void AInteractLever::Interact()
 	if (!bEnabled)
 	{
 		bEnabled = true;
-		/*FRotator OnRotation = LeverOffRotation;
-		OnRotation.Pitch += 100.0f;
-		LeverMesh->SetRelativeRotation(OnRotation);		*/	
 		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 		TriggerActor->Trigger();
 	}
 	else
 	{
 		bEnabled = false;
-		/*LeverMesh->SetRelativeRotation(LeverOffRotation);*/
 		UGameplayStatics::PlaySoundAtLocation(this, ClickSound, GetActorLocation());
 		if (bIsDoor) TriggerActor->DisableTrigger();
 		else TriggerActor->Trigger();
