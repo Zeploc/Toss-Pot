@@ -57,13 +57,31 @@ void ASwitchPlayersPad::OnTriggerEndOverlap(UPrimitiveComponent * OverlappedComp
 
 void ASwitchPlayersPad::Interact()
 {
-	if (Overlapped)
+	if (Overlapped && !Switching && OtherSwitch)
 	{
 		ButtonMID->SetScalarParameterValue("Lit", 1.0f);
 		bEnabled = true;
 		if (OtherSwitch->bEnabled)
 		{
-			Cast<ATossPotGameMode>(GetWorld()->GetAuthGameMode())->SwitchPlayers();
+			Switching = true;
+			OtherSwitch->Switching = true;
+			GetWorldTimerManager().SetTimer(SwitchingDelay, this, &ASwitchPlayersPad::SwitchPlayers, SwitchDelayTime, false);
+			APlayerController* Player1 = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+			APlayerController* Player2 = UGameplayStatics::GetPlayerController(GetWorld(), 1);
+			Player1->GetCharacter()->DisableInput(Player1);
+			Player2->GetCharacter()->DisableInput(Player2);
 		}
 	}
+}
+
+void ASwitchPlayersPad::SwitchPlayers()
+{
+	GetWorldTimerManager().ClearTimer(SwitchingDelay);
+	Cast<ATossPotGameMode>(GetWorld()->GetAuthGameMode())->SwitchPlayers();
+	Switching = false;
+	OtherSwitch->Switching = false;
+	APlayerController* Player1 = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APlayerController* Player2 = UGameplayStatics::GetPlayerController(GetWorld(), 1);
+	Player1->GetCharacter()->EnableInput(Player1);
+	Player2->GetCharacter()->EnableInput(Player2);
 }

@@ -34,6 +34,16 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 	bool Overlapped = false;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
+		bool Switching = false;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
+		float SwitchDelayTime = 1.0f;
+
+	FTimerHandle SwitchingDelay;
+
+	void SwitchPlayers();
+	
 
 	UMaterialInstanceDynamic* ButtonMID;
 	
