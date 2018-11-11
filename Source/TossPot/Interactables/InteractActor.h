@@ -38,7 +38,7 @@ public:
 	bool bEnabled = false;
 
 	UFUNCTION(BlueprintCallable)
-		void Reset();
+		virtual void Reset();
 
 	
 };
