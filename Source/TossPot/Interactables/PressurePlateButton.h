@@ -16,8 +16,6 @@ class TOSSPOT_API APressurePlateButton : public AActor
 	UPROPERTY(VisibleDefaultsOnly)
 		class UBoxComponent* BoxTrigger;
 
-	UPROPERTY(EditAnywhere)
-		class ATriggerActor* TriggerActor;
 		
 
 	UFUNCTION()
@@ -42,6 +40,10 @@ public:
 
 	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
 		class USoundBase* ReleaseSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class ATriggerActor* TriggerActor;
+
 
 	void Reset();
 
@@ -75,7 +77,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EInteractMode InteractMode = EInteractMode::EI_HOLD;
 
-	bool Activated = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool Activated = false;
 	
 	UMaterialInstanceDynamic* ButtonMID;
 

@@ -40,5 +40,4 @@ public:
 	UFUNCTION(BlueprintCallable)
 		virtual void Reset();
 
-	
 };
