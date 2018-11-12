@@ -23,6 +23,7 @@ AConveyorBelt::AConveyorBelt()
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision Component"));
 	CollisionBox->SetupAttachment(RootComponent);
 
+	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 
 	
 }
@@ -46,7 +47,7 @@ void AConveyorBelt::Tick(float DeltaTime)
 	{
 		FVector ForwardVector = GetActorForwardVector();
 		ForwardVector *= PushSpeed;
-		Toss->LaunchCharacter(ForwardVector, false, false);
+		Toss->LaunchCharacter((ArrowComponent->GetForwardVector() * PushSpeed), false, false);
 	}
 }
 

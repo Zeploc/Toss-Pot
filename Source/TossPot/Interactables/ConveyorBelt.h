@@ -22,6 +22,8 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
 		class UBoxComponent* CollisionBox;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite)
+		class UArrowComponent* ArrowComponent;
 	
 	UFUNCTION()
 		void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

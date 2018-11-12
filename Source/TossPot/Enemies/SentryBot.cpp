@@ -37,7 +37,7 @@ void ASentryBot::BeginPlay()
 	//SphereCollision->OnComponentBeginOverlap.Clear();
 	//SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &AMovingCollectable::OnCompOverlap);
 
-
+	OGFireRate = FireRate;
 	m_TBox->OnComponentBeginOverlap.AddDynamic(this, &ASentryBot::OnOBoxOverlapBegin);
 
 	m_SearchBox->OnComponentBeginOverlap.AddDynamic(this, &ASentryBot::OnOBoxOverlapBegin);
@@ -124,6 +124,7 @@ void ASentryBot::Tick(float DeltaTime)
 
 	if (IsColliding /*&& TossPot*/)
 	{
+		SpotLight->SetLightColor({ 1,0,0 });
 		WarningTime -= DeltaTime;
 		AlertProtocol();
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, "Decrement");
@@ -138,7 +139,7 @@ void ASentryBot::Tick(float DeltaTime)
 
 void ASentryBot::AlertProtocol()
 {
-	if (WarningTime <= 0)
+	if (WarningTime <= 0 && FireRate <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning time over"));
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, "SHOOT THAT BICH");
@@ -160,6 +161,7 @@ void ASentryBot::AlertProtocol()
 			GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, "Could not cast to bullet");
 		}
 		//Shoot that bitch
+		FireRate = OGFireRate;
 	}
 
 

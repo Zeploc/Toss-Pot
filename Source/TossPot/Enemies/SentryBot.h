@@ -44,6 +44,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float WarningTime = 2;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float FireRate = 0.3;
+
+	
+
 protected:
 
 	
@@ -70,7 +75,7 @@ private:
 	bool bMoving = false;
 	class ATossPotCharacter* TossPot; // Could be wrong class
 
-
+	float OGFireRate;
 	
 
 	void MoveTowards(FVector _location, float DeltaTime);
