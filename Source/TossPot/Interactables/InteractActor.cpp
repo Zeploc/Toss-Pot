@@ -27,6 +27,7 @@ void AInteractActor::Tick(float DeltaTime)
 
 void AInteractActor::Interact()
 {
+	bEnabled = !bEnabled;
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, TEXT("Using Base Interact (Interact Actor as no interact override)"));
 }
 

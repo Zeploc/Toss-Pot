@@ -46,7 +46,7 @@ void APressurePlateButton::Reset()
 {
 	IsOverlapping = false;
 	Activated = false;
-	MoveUp = false;
+	MoveUp = true;
 	Button->SetRelativeLocation(OriginalButtonPosition);
 	Button->SetSimulatePhysics(false);
 }
@@ -172,6 +172,10 @@ void APressurePlateButton::OnButtonEndOverlap(UPrimitiveComponent * OverlappedCo
 void APressurePlateButton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (Button->GetComponentLocation().Z > OriginalButtonPosition.Z)
+	{
+		Button->SetRelativeLocation(OriginalButtonPosition);
+	}
 	if (MoveUp == true && IsOverlapping == false)
 	{
 		

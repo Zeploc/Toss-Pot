@@ -36,7 +36,8 @@ void ACheckpoint::BeginPlay()
 
 	m_TBox->OnComponentBeginOverlap.AddDynamic(this, &ACheckpoint::OnOBoxOverlapBegin);
 	m_TBox->OnComponentEndOverlap.AddDynamic(this, &ACheckpoint::OnBoxOverlapEnd);
-	
+
+	m_CurrentCheckPointPosition = GetActorLocation();
 }
 
 void ACheckpoint::Respawn(ATossPotCharacter * Player)
