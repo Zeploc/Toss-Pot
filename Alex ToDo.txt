@@ -1,5 +1,4 @@
-
-Delay death
+Conveyer belt stop moving when inactive
 fix camera
 
 DONE
@@ -17,3 +16,5 @@ add pot walls to level 2
 conveyer goes wrong way
 platforms and doors aren't reset
 Spawn mesh and positions
+Delay death
+switch pad stuck

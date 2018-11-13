@@ -84,4 +84,10 @@ void ASwitchPlayersPad::SwitchPlayers()
 	APlayerController* Player2 = UGameplayStatics::GetPlayerController(GetWorld(), 1);
 	Player1->GetCharacter()->EnableInput(Player1);
 	Player2->GetCharacter()->EnableInput(Player2);
+	FVector P1Loc = Player1->GetCharacter()->GetActorLocation();
+	FVector P2Loc = Player2->GetCharacter()->GetActorLocation();
+	P1Loc.Z += 50.0f;
+	P2Loc.Z += 50.0f;
+	Player1->GetCharacter()->SetActorLocation(P1Loc);
+	Player2->GetCharacter()->SetActorLocation(P2Loc);
 }
