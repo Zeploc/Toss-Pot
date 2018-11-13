@@ -40,10 +40,16 @@ void ACheckpoint::BeginPlay()
 	m_CurrentCheckPointPosition = GetActorLocation();
 }
 
-void ACheckpoint::Respawn(ATossPotCharacter * Player, FVector SpawnLocation)
+void ACheckpoint::Respawn(ATossPotCharacter * Player, FVector SpawnLocation, bool Delay)
 {
-	Player->Death(SpawnLocation);
-	//Player->SetActorLocation(SpawnLocation);
+	if (Delay)
+	{
+		Player->Death(SpawnLocation);
+	}
+	else
+	{
+		Player->SetActorLocation(SpawnLocation);
+	}
 }
 
 // Called every frame

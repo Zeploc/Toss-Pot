@@ -46,7 +46,7 @@ protected:
 		FVector m_CurrentCheckPointPosition;
 
 	UFUNCTION(BlueprintCallable)
-		void Respawn(class ATossPotCharacter* Player , FVector SpawnLocation);
+		void Respawn(class ATossPotCharacter* Player , FVector SpawnLocation, bool Delay);
 
 public:	
 	// Called every frame
