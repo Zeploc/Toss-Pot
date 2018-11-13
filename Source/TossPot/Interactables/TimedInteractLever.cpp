@@ -54,8 +54,8 @@ void ATimedInteractLever::Interact()
 	bEnabled = true;
 	if (TickingDown)
 	{
-		GetWorldTimerManager().ClearTimer(TickingTimeHandle);
-		GetWorldTimerManager().SetTimer(TickingTimeHandle, this, &ATimedInteractLever::DisableTrigger, DelayTime, false);
+		//GetWorldTimerManager().ClearTimer(TickingTimeHandle);
+		//GetWorldTimerManager().SetTimer(TickingTimeHandle, this, &ATimedInteractLever::DisableTrigger, DelayTime, false);
 		return;
 	}
 

@@ -1,0 +1,17 @@
+
+Buttons spazzy
+fix camera
+add interact particles on timed lever
+fix end screen
+make itneract particles faster
+add pot walls to level 2
+conveyer goes wrong way
+platforms aren't reset
+
+DONE
+Change outline colour
+toss particle effect continueing
+make toss mat same colour
+pot can jump over on platformy puzzle in level 1
+3 layer level, fix up pots entry
+timed lever broken, when pressing visual does not update on animation
