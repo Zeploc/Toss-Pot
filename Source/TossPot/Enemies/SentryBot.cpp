@@ -68,7 +68,7 @@ void ASentryBot::Tick(float DeltaTime)
 	{
 		for (int i = 0; i < MovementPoints.Num(); i++)
 		{
-			if (MovementPoints[i]->iPointNum == iCurrentPoint)
+			if (MovementPoints[i]->iPointNum == iCurrentPoint && WarningTime >= 2)
 			{
 				//UE_LOG(LogTemp, Warning, TEXT("MOVING"));
 				FVector destination;
@@ -108,7 +108,7 @@ void ASentryBot::Tick(float DeltaTime)
 						FVector axis = FVector(0, 0, 1);
 						FinalDir = FinalDir.RotateAngleAxis(90, axis);
 						FQuat FinalRotate = FinalDir.Rotation().Quaternion();
-						SetActorRotation(FinalRotate);
+						this->SetActorRotation(FinalRotate);
 					}
 
 				}
@@ -130,10 +130,12 @@ void ASentryBot::Tick(float DeltaTime)
 		WarningTime -= DeltaTime;
 		AlertProtocol();
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, "Decrement");
+		FireRate -= DeltaTime;
 		
 	}
 	if (IsColliding == false)
 	{
+		SpotLight->SetLightColor({ 1,1,0 });
 		WarningTime = 2;
 	}
 
@@ -141,13 +143,14 @@ void ASentryBot::Tick(float DeltaTime)
 
 void ASentryBot::AlertProtocol()
 {
+	
 	if (WarningTime <= 0 && FireRate <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Warning time over"));
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, "SHOOT THAT BICH");
 		//ABullet* NewBullet;
-		FVector Pos = TossPot->GetActorLocation();
-		FRotator Rot = TossPot->GetActorRotation();
+		FVector Pos = this->GetActorLocation();
+		FRotator Rot = this->GetActorRotation();
 		 
 		ABullet* SpawnedBullet = Cast<ABullet>(GetWorld()->SpawnActor(BulletClass, &Pos, &Rot));
 
