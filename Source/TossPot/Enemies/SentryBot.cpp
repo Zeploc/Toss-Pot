@@ -36,6 +36,7 @@ void ASentryBot::BeginPlay()
 	Super::BeginPlay();
 	//SphereCollision->OnComponentBeginOverlap.Clear();
 	//SphereCollision->OnComponentBeginOverlap.AddDynamic(this, &AMovingCollectable::OnCompOverlap);
+	
 
 	OGFireRate = FireRate;
 	m_TBox->OnComponentBeginOverlap.AddDynamic(this, &ASentryBot::OnOBoxOverlapBegin);
@@ -73,6 +74,7 @@ void ASentryBot::Tick(float DeltaTime)
 				FVector destination;
 				FRotator rotation;
 				MovementPoints[i]->GetSocketWorldLocationAndRotation(FName(), destination, rotation);
+				
 				MoveTowards(destination, DeltaTime);
 				if ((destination - GetActorLocation()).Size() < 10.0f)
 				{
@@ -91,7 +93,7 @@ void ASentryBot::Tick(float DeltaTime)
 						FVector axis = FVector(0, 0, 1);
 						FinalDir = FinalDir.RotateAngleAxis(90, axis);
 						FQuat FinalRotate = FinalDir.Rotation().Quaternion();
-						SetActorRotation(FinalRotate);
+						this->SetActorRotation(FinalRotate);
 					}
 					else
 					{
