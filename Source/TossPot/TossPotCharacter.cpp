@@ -63,6 +63,27 @@ void ATossPotCharacter::BeginPlay()
 
 }
 
+
+void ATossPotCharacter::Death(FVector SpawnPos)
+{
+	SpawningPos = SpawnPos;
+	GetWorldTimerManager().SetTimer(RespawnDelay, this, &ATossPotCharacter::RespawnPlayer, SpawnDelay, false);
+	GetMesh()->SetVisibility(false);
+	GetCharacterMovement()->DisableMovement();
+	DisableInput(Cast<APlayerController>(GetController()));
+
+	// respawn
+}
+
+void ATossPotCharacter::RespawnPlayer()
+{
+	GetWorldTimerManager().ClearTimer(RespawnDelay);
+	SetActorLocation(SpawningPos);
+	GetMesh()->SetVisibility(true);
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	EnableInput(Cast<APlayerController>(GetController()));
+}
+
 void ATossPotCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

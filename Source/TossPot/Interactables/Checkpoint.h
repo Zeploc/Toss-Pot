@@ -2,10 +2,8 @@
 
 #pragma once
 
-#include "Engine/TriggerVolume.h"
 #include "CoreMinimal.h"
 
-#include <vector>
 #include "GameFramework/Actor.h"
 #include "Checkpoint.generated.h"
 
@@ -35,9 +33,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	bool TossIsColliding = false;
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 	bool PotIsColliding = false;
 	class APotCharacter* Pot;
 	class ATossCharacter* Toss;
@@ -48,7 +46,7 @@ protected:
 		FVector m_CurrentCheckPointPosition;
 
 	UFUNCTION(BlueprintCallable)
-		void Respawn(class ATossPotCharacter* Player);
+		void Respawn(class ATossPotCharacter* Player , FVector SpawnLocation);
 
 public:	
 	// Called every frame

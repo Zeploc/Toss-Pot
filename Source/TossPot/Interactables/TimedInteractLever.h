@@ -23,7 +23,7 @@ public:
 		class UBoxComponent* Collision;
 
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class ATriggerActor* TriggerActor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

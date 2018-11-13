@@ -15,7 +15,6 @@ class TOSSPOT_API APressurePlateButton : public AActor
 
 	UPROPERTY(VisibleDefaultsOnly)
 		class UBoxComponent* BoxTrigger;
-
 		
 
 	UFUNCTION()

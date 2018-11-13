@@ -30,6 +30,12 @@ public:
 
 	virtual void Trigger();
 	virtual void DisableTrigger();
+
+	UFUNCTION(BlueprintCallable)
+		virtual void Reset() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool Open = false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float OpeningSpeed = 1.0f;

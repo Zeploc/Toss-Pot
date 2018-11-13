@@ -21,7 +21,7 @@ APressurePlateButton::APressurePlateButton()
 	SetRootComponent(Plate);// RootComponent);
 	//Plate->SetupAttachment(RootComponent);
 	Button->SetupAttachment(Plate);
-	Button->RelativeLocation = FVector(0.0f, 0.0f, 30.0f);
+	Button->RelativeLocation = FVector(0.0f, 0.0f, 10.0f);
 	Button->SetConstraintMode(EDOFMode::SixDOF);
 	
 
@@ -32,7 +32,7 @@ APressurePlateButton::APressurePlateButton()
 	BoxTrigger->SetupAttachment(Button);
 	
 	Plate->SetMobility(EComponentMobility::Static);
-	Button->SetMobility(EComponentMobility::Movable);
+	//Button->SetMobility(EComponentMobility::Movable);
 
 	Button->SetSimulatePhysics(false);
 
@@ -57,7 +57,7 @@ void APressurePlateButton::Reset()
 void APressurePlateButton::BeginPlay()
 {
 	Super::BeginPlay();
-	OriginalButtonPosition = Button->GetComponentLocation();
+	OriginalButtonPosition = Button->RelativeLocation;
 
 	ButtonMID = UMaterialInstanceDynamic::Create(Button->GetMaterial(0), this);
 	Button->SetMaterial(0, ButtonMID);
@@ -89,7 +89,7 @@ void APressurePlateButton::Trigger()
 	if (InteractMode == EInteractMode::EI_ONEOFF && Activated) // One off and already triggered
 		return;
 
-	Button->SetSimulatePhysics(true);
+	//Button->SetSimulatePhysics(true);
 	MoveUp = false;
 	Activated = true;
 	if (TriggerActor != nullptr)
@@ -122,7 +122,7 @@ void APressurePlateButton::ReleaseTrigger()
 	if (InteractMode == EInteractMode::EI_ONEOFF && Activated) // One off don't release
 		return;
 
-	Button->SetSimulatePhysics(false);
+	//Button->SetSimulatePhysics(false);
 	MoveUp = true;
 	// Disable Sound
 	UGameplayStatics::PlaySoundAtLocation(this, ReleaseSound, GetActorLocation());
@@ -174,10 +174,9 @@ void APressurePlateButton::OnButtonEndOverlap(UPrimitiveComponent * OverlappedCo
 void APressurePlateButton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (MoveUp == true && IsOverlapping == false)
-	{
-		
-		if (Button->GetComponentLocation().Z < OriginalButtonPosition.Z)
+	if (MoveUp == true && IsOverlapping == false && Activated == false)
+	{		
+		if (Button->RelativeLocation.Z < OriginalButtonPosition.Z)
 		{
 			Button->MoveComponent(Button->GetUpVector(), Button->GetComponentRotation(), true);
 		}
@@ -187,6 +186,22 @@ void APressurePlateButton::Tick(float DeltaTime)
 			Button->SetRelativeLocation(OriginalButtonPosition);
 		}
 	}
+	else if (MoveUp == false && Activated == true)
+	{
+		FVector TriggeredPosition = OriginalButtonPosition;
+		TriggeredPosition.Z = 0.0f;
+
+		if (Button->GetComponentLocation().Z > TriggeredPosition.Z)
+		{
+			Button->MoveComponent(-Button->GetUpVector(), Button->GetComponentRotation(), true);
+		}
+		else
+		{
+			//MoveUp = false;
+			Button->SetRelativeLocation(TriggeredPosition);
+		}
+	}
+
 	if (Button->GetComponentLocation().X != Plate->GetComponentLocation().X)
 	{
 		FVector Newlocation = Button->GetComponentLocation();

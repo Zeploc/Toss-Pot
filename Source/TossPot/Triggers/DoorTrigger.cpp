@@ -25,37 +25,6 @@ void ADoorTrigger::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//FVector CurrentPos = Door->GetComponentLocation();// GetActorLocation();
-	//if (bOpen)
-	//{
-	//	if (FVector::Distance(CurrentPos, StartPosition) < MoveDistance)
-	//	//if (CurrentPos.Z < StartPosition.Z + MoveDistance)
-	//	{
-	//		CurrentPos += GetActorUpVector() * MoveSpeed * DeltaTime;
-	//		Door->SetWorldLocation(CurrentPos);// SetActorLocation(CurrentPos);
-	//	}
-	//	else
-	//	{
-	//		FVector NewPosition = StartPosition;
-	//		NewPosition += GetActorUpVector() * MoveDistance;
-	//		Door->SetWorldLocation(NewPosition);  //SetActorLocation(NewPosition);
-	//		bOpen = false;
-	//	}
-	//}
-	//else if (bClose)
-	//{
-	//	if (FVector::DotProduct(CurrentPos - StartPosition, GetActorUpVector()) > 0)
-	//	//if (CurrentPos.Z > StartPosition.Z)
-	//	{
-	//		CurrentPos -= GetActorUpVector() * MoveSpeed * DeltaTime;
-	//		Door->SetWorldLocation(CurrentPos); //SetActorLocation(CurrentPos);
-	//	}
-	//	else
-	//	{
-	//		bClose = false;
-	//		Door->SetWorldLocation(StartPosition);  //SetActorLocation(StartPosition);
-	//	}
-	//}
 }
 
 void ADoorTrigger::Trigger()
@@ -83,4 +52,11 @@ void ADoorTrigger::DisableTrigger()
 		UGameplayStatics::PlaySoundAtLocation(this, MoveSound, GetActorLocation());
 		//SetActorLocation(StartPosition);
 	}
+}
+
+void ADoorTrigger::Reset()
+{
+	ATriggerActor::Reset();
+	NumOfTriggered = 0;
+	Open = true;
 }

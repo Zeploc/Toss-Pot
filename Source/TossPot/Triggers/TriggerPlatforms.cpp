@@ -143,3 +143,14 @@ void ATriggerPlatforms::DisableTrigger()
 	bPlatform2Move = true;
 	MovementAudioComponent->Play();
 }
+
+void ATriggerPlatforms::Reset()
+{
+	ATriggerActor::Reset();
+	SetActorLocation(StartPostion1);
+	bPlatform1DirectionForward = false;
+	bPlatform2DirectionForward = false;
+	bPlatform1Move = false;
+	bPlatform2Move = false;
+	MovementAudioComponent->Stop();
+}

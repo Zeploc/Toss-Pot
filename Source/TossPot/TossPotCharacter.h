@@ -33,6 +33,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 public:
 	ATossPotCharacter();
 
@@ -41,8 +42,16 @@ public:
 
 	void Interact();
 
+	void Death(FVector SpawnPos);
+	void RespawnPlayer();
 
 	UPROPERTY(EditAnywhere)
 		float InteractRange = 100.0f;
+
+	FVector SpawningPos;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float SpawnDelay = 1.0f;
 	
+	FTimerHandle RespawnDelay;
 };
