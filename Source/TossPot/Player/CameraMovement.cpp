@@ -55,7 +55,7 @@ void ACameraMovement::Tick(float DeltaTime)
 		float CenterThreshold = 500.0f;
 		float CenterOffsetThreshold = 200.0f;
 		float MoveSpeed = 5.0f;
-		float CenterMoveSpeed = 30.0f;
+		float CenterMoveSpeed = 20.0f;
 		FVector NewAimPos = CurrentLocation;
 
 		FVector DifferenceNoZ = Difference;
@@ -63,7 +63,7 @@ void ACameraMovement::Tick(float DeltaTime)
 		// If the players start spreading far away  //OR Camera center is too far from the center of players
 		if (DifferenceNoZ.Size() > CenterThreshold)
 		{
-			NewAimPos.X = CenterPosition.X;
+			NewAimPos.X = FMath::Lerp(CurrentLocation.X, CenterPosition.X, CenterMoveSpeed * 2 * DeltaTime); //CenterPosition.X;
 		}
 		else if (abs(CenterPosition.X - CurrentLocation.X) > CenterOffsetThreshold)
 		{
@@ -82,7 +82,7 @@ void ACameraMovement::Tick(float DeltaTime)
 		float ZoomSpeed = 5.0f;
 
 		float ZoomDistanceThresholdX = 900.0f;
-		float ZoomDistanceThresholdY = 1000.0f;
+		float ZoomDistanceThresholdY = 700.0f;
 		float YExtra = 0.0f;
 		if (abs(Difference.X) > ZoomDistanceThresholdX)
 		{
@@ -141,6 +141,8 @@ void ACameraMovement::Tick(float DeltaTime)
 		NewSocketOffset.Z = CurrentZoom;
 		//float CurrentXExtra = OriginalXSocketOffset - NewSocketOffset.X;
 		
+		//YExtra = FMath::Lerp(CameraBoom->SocketOffset.X - OriginalXSocketOffset, YExtra, ZoomSpeed * DeltaTime);
+
 		NewSocketOffset.X = FMath::Lerp(NewSocketOffset.X, OriginalXSocketOffset - YExtra, ZoomSpeed * DeltaTime);
 		CameraBoom->SocketOffset = NewSocketOffset;
 
