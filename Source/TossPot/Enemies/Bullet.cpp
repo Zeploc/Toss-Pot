@@ -5,7 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Player/TossCharacter.h"
+#include "TossPotCharacter.h"
 #include "Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h"
 
 #include "Engine.h"
@@ -51,9 +51,12 @@ void ABullet::Tick(float DeltaTime)
 
 void ABullet::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ATossCharacter* IsToss = Cast<ATossCharacter>(OtherActor);
+	ATossPotCharacter* IsToss = Cast<ATossPotCharacter>(OtherActor);
 	if (IsToss)
 	{
+		this->SetActorHiddenInGame(true);
+		this->SetActorTickEnabled(false);
+		this->CollisionBox->Deactivate();
 		IsColliding = true;
 		Toss = IsToss;
 		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, "Toss On big Converor Belt!");
@@ -63,7 +66,7 @@ void ABullet::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherA
 
 void ABullet::OnOverlapEnd(UPrimitiveComponent * OverlappedComp, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex)
 {
-	ATossCharacter* IsToss = Cast<ATossCharacter>(OtherActor);
+	ATossPotCharacter* IsToss = Cast<ATossPotCharacter>(OtherActor);
 
 	if (IsToss)
 	{

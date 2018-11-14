@@ -68,7 +68,7 @@ void ASentryBot::Tick(float DeltaTime)
 	{
 		for (int i = 0; i < MovementPoints.Num(); i++)
 		{
-			if (MovementPoints[i]->iPointNum == iCurrentPoint && WarningTime >= 2)
+			if (MovementPoints[i]->iPointNum == iCurrentPoint && WarningTime >= 0.4)
 			{
 				//UE_LOG(LogTemp, Warning, TEXT("MOVING"));
 				FVector destination;
@@ -136,7 +136,7 @@ void ASentryBot::Tick(float DeltaTime)
 	if (IsColliding == false)
 	{
 		SpotLight->SetLightColor({ 1,1,0 });
-		WarningTime = 2;
+		WarningTime = 0.4f;
 	}
 
 }
@@ -159,7 +159,7 @@ void ASentryBot::AlertProtocol()
 		FVector Resultant = TossPotVector - SentryVector;
 		if (SpawnedBullet)
 		{
-			SpawnedBullet->ProjectileMotion->Velocity = Resultant;
+			SpawnedBullet->ProjectileMotion->Velocity = Resultant * SpawnedBullet->ProjectileMotion->InitialSpeed;
 		}
 		else
 		{
