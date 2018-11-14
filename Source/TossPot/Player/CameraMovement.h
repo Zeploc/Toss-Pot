@@ -55,7 +55,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float ZHeight = -400;
 
-
+	float OriginalXSocketOffset = 0;
 
 	UFUNCTION(BlueprintCallable)
 		void SetControllersView();
