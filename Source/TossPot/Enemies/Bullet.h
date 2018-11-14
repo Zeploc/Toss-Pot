@@ -41,7 +41,7 @@ public:
 
 private:
 	bool IsColliding = false;
-	class ATossCharacter* Toss;
+	class ATossPotCharacter* Toss;
 
 	
 	
