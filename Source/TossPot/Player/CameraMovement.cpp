@@ -76,25 +76,47 @@ void ACameraMovement::Tick(float DeltaTime)
 
 		// ### Finding zoom and boom arm offset ###
 		float CurrentZoom = CameraBoom->TargetArmLength;
-		float ScaleOutRatio = 0.4f;
+		float XScaleOutRatio = 0.5f;
+		float YScaleOutRatio = 0.4f;
 		float GoalZoom = CloseBoomArmLength;
 		float ZoomSpeed = 5.0f;
 
-		float ZoomDistanceThresholdX = 1500.0f;
+		float ZoomDistanceThresholdX = 900.0f;
 		float ZoomDistanceThresholdY = 1000.0f;
 		float YExtra = 0.0f;
 		if (abs(Difference.X) > ZoomDistanceThresholdX)
 		{
-			GoalZoom += abs(ZoomDistanceThresholdX - Distance) * ScaleOutRatio;
+			GoalZoom += abs(ZoomDistanceThresholdX - Distance) * XScaleOutRatio;
 		}
 		else if (abs(Difference.Y) > ZoomDistanceThresholdY)
 		{
-			GoalZoom += abs(ZoomDistanceThresholdY - Distance) * ScaleOutRatio;
+			GoalZoom += abs(ZoomDistanceThresholdY - Distance) * YScaleOutRatio;
 			// CAUSES SLIGHT JOLT FROM BEING 0 to THIS VALUE, (REDUCE MINIMUM WITH THIS VALUE WOULD FIX IT
-			YExtra = abs(ZoomDistanceThresholdY - Distance) * ScaleOutRatio;
+			YExtra = abs(ZoomDistanceThresholdY - Distance) * YScaleOutRatio;
 		}
 
 		// ### Z Height ###
+
+		float BackPlayerTooFarDistance = 300.0f;
+		float ZoomOutMultiplyer = 0.013f;
+		float OffFloorZOffset = 300.0f;
+
+		FVector FurtherBackPlayer = Player1->GetActorLocation();
+		if (Player2->GetActorLocation().Y < FurtherBackPlayer.Y)
+			FurtherBackPlayer = Player2->GetActorLocation();
+
+		if (FurtherBackPlayer.Z > OffFloorZOffset)
+		{
+			if (abs(Difference.Y) > BackPlayerTooFarDistance)
+			{
+				CurrentZoom -= (BackPlayerTooFarDistance - abs(Difference.Y)) * ZoomOutMultiplyer;
+			}
+		}
+		else
+		{
+			
+			GoalZoom -= abs(OffFloorZOffset - CenterPosition.Z);
+		}
 
 		/*FVector ZDifference = Difference;
 		ZDifference.X = 0;
