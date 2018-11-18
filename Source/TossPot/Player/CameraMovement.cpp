@@ -15,18 +15,21 @@ ACameraMovement::ACameraMovement()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	// Create a camera boom attached to the root (capsule)
-	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->bAbsoluteRotation = true; // Rotation of the character should not affect rotation of boom
-	CameraBoom->bDoCollisionTest = false;
-	CameraBoom->TargetArmLength = 500.f;
-	CameraBoom->SocketOffset = FVector(-40.f, 0.f, 180.f);
-	CameraBoom->RelativeRotation = FRotator(0.f, 0.f, 0.f);
+	//CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	//CameraBoom->SetupAttachment(RootComponent);
+	//CameraBoom->bAbsoluteRotation = true; // Rotation of the character should not affect rotation of boom
+	//CameraBoom->bDoCollisionTest = false;
+	//CameraBoom->TargetArmLength = 500.f;
+	//CameraBoom->SocketOffset = FVector(-40.f, 0.f, 180.f);
+	//CameraBoom->RelativeRotation = FRotator(0.f, 0.f, 0.f);
+
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Camera Root"));
 
 	// Create a camera and attach to boom
-	SideViewCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("SideViewCamera"));
-	SideViewCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
-	SideViewCameraComponent->bUsePawnControlRotation = false; // We don't want the controller rotating the camera
+	MainCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MainCamera"));
+	MainCamera->SetupAttachment(RootComponent);
+	//SideViewCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	MainCamera->bUsePawnControlRotation = false; // We don't want the controller rotating the camera
 }
 
 // Called when the game starts or when spawned
@@ -34,7 +37,7 @@ void ACameraMovement::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	OriginalXSocketOffset = CameraBoom->SocketOffset.X;
+	//OriginalXSocketOffset = CameraBoom->SocketOffset.X;
 }
 
 // Called every frame
@@ -49,25 +52,36 @@ void ACameraMovement::Tick(float DeltaTime)
 		//SetActorLocation(CurrentLocation);
 
 		FVector Difference = Player1->GetActorLocation() - Player2->GetActorLocation();
-		float Distance = Difference.Size();
-		
+		float Distance = Difference.Size();		
 
 		float CenterThreshold = 500.0f;
 		float CenterOffsetThreshold = 200.0f;
-		float MoveSpeed = 5.0f;
-		float CenterMoveSpeed = 20.0f;
+		float MoveSpeed = 6.0f;
+		float CenterMoveSpeed = 30.0f;
+		float CenterOffsetMoveSpeed = 20.0f;
 		FVector NewAimPos = CurrentLocation;
 
-		FVector DifferenceNoZ = Difference;
-		DifferenceNoZ.Z = 0;
-		// If the players start spreading far away  //OR Camera center is too far from the center of players
-		if (DifferenceNoZ.Size() > CenterThreshold)
+
+		FVector FurtherPlayer = Player1->GetActorLocation();
+		if (abs((Player2->GetActorLocation() - CurrentLocation).X) > abs((FurtherPlayer - CurrentLocation).X))
 		{
-			NewAimPos.X = FMath::Lerp(CurrentLocation.X, CenterPosition.X, CenterMoveSpeed * 2 * DeltaTime); //CenterPosition.X;
+			FurtherPlayer = Player2->GetActorLocation();
 		}
-		else if (abs(CenterPosition.X - CurrentLocation.X) > CenterOffsetThreshold)
+		// If the players start spreading far away  //OR Camera center is too far from the center of players
+		if (abs(Difference.X) >= CenterThreshold)
 		{
-			NewAimPos.X = FMath::Lerp(CurrentLocation.X, CenterPosition.X, CenterMoveSpeed * DeltaTime);
+			NewAimPos.X = FMath::Lerp(CurrentLocation.X, CenterPosition.X, CenterMoveSpeed * DeltaTime); //CenterPosition.X;
+		}
+		else if (abs(FurtherPlayer.X - CurrentLocation.X) > CenterOffsetThreshold)
+		{
+			FVector Direction = (FurtherPlayer - CurrentLocation);
+			Direction.Normalize();
+
+			FVector ExtraDistance = FurtherPlayer - (CurrentLocation + Direction * CenterOffsetThreshold);
+
+			float NewXPosition = CurrentLocation.X + ExtraDistance.X;// (CenterPosition.X - CurrentLocation.X) - (Direction.X) * Distance / 4.0f; // (CurrentLocation + Direction * CenterOffsetThreshold).X; // CenterOffsetThreshold - -CurrentLocation.X;
+			//NewXPosition += CenterOffsetThreshold - CenterPosition.X + CurrentLocation.X;
+			NewAimPos.X = FMath::Lerp(CurrentLocation.X, NewXPosition, CenterOffsetMoveSpeed * DeltaTime);
 		}
 
 		
@@ -75,7 +89,7 @@ void ACameraMovement::Tick(float DeltaTime)
 
 
 		// ### Finding zoom and boom arm offset ###
-		float CurrentZoom = CameraBoom->TargetArmLength;
+		float CurrentZoom = MainCamera->RelativeLocation.Size();// 0;// CameraBoom->TargetArmLength;
 		float XScaleOutRatio = 0.5f;
 		float YScaleOutRatio = 0.4f;
 		float GoalZoom = CloseBoomArmLength;
@@ -84,6 +98,7 @@ void ACameraMovement::Tick(float DeltaTime)
 		float ZoomDistanceThresholdX = 900.0f;
 		float ZoomDistanceThresholdY = 700.0f;
 		float YExtra = 0.0f;
+
 		if (abs(Difference.X) > ZoomDistanceThresholdX)
 		{
 			GoalZoom += abs(ZoomDistanceThresholdX - Distance) * XScaleOutRatio;
@@ -97,26 +112,26 @@ void ACameraMovement::Tick(float DeltaTime)
 
 		// ### Z Height ###
 
-		float BackPlayerTooFarDistance = 300.0f;
-		float ZoomOutMultiplyer = 0.013f;
-		float OffFloorZOffset = 300.0f;
+		///*float BackPlayerTooFarDistance = 300.0f;
+		//float ZoomOutMultiplyer = 0.013f;
+		//float OffFloorZOffset = 300.0f;
 
-		FVector FurtherBackPlayer = Player1->GetActorLocation();
-		if (Player2->GetActorLocation().Y < FurtherBackPlayer.Y)
-			FurtherBackPlayer = Player2->GetActorLocation();
+		//FVector FurtherBackPlayer = Player1->GetActorLocation();
+		//if (Player2->GetActorLocation().Y < FurtherBackPlayer.Y)
+		//	FurtherBackPlayer = Player2->GetActorLocation();
 
-		if (FurtherBackPlayer.Z > OffFloorZOffset)
-		{
-			if (abs(Difference.Y) > BackPlayerTooFarDistance)
-			{
-				CurrentZoom -= (BackPlayerTooFarDistance - abs(Difference.Y)) * ZoomOutMultiplyer;
-			}
-		}
-		else
-		{
-			
-			GoalZoom -= abs(OffFloorZOffset - CenterPosition.Z);
-		}
+		//if (FurtherBackPlayer.Z > OffFloorZOffset)
+		//{
+		//	if (abs(Difference.Y) > BackPlayerTooFarDistance)
+		//	{
+		//		CurrentZoom -= (BackPlayerTooFarDistance - abs(Difference.Y)) * ZoomOutMultiplyer;
+		//	}
+		//}
+		//else
+		//{
+		//	
+		//	GoalZoom -= abs(OffFloorZOffset - CenterPosition.Z);
+		//}*/
 
 		/*FVector ZDifference = Difference;
 		ZDifference.X = 0;
@@ -133,33 +148,34 @@ void ACameraMovement::Tick(float DeltaTime)
 
 		// ### SetZoom and boom offset ###
 		
-		CurrentZoom = FMath::Lerp(CurrentZoom, GoalZoom, ZoomSpeed * DeltaTime);
-		CameraBoom->TargetArmLength = CurrentZoom;
+		//CurrentZoom = FMath::Lerp(CurrentZoom, GoalZoom, ZoomSpeed * DeltaTime);
+		//CameraBoom->TargetArmLength = CurrentZoom;
 
-		CurrentZoom += CloseBoomArmZ - CloseBoomArmLength;
-		FVector NewSocketOffset = CameraBoom->SocketOffset;
-		NewSocketOffset.Z = CurrentZoom;
+		///CurrentZoom += CloseBoomArmZ - CloseBoomArmLength;
+		///FVector NewSocketOffset;// = 0 CameraBoom->SocketOffset;
+		///NewSocketOffset.Z = CurrentZoom;
 		//float CurrentXExtra = OriginalXSocketOffset - NewSocketOffset.X;
 		
 		//YExtra = FMath::Lerp(CameraBoom->SocketOffset.X - OriginalXSocketOffset, YExtra, ZoomSpeed * DeltaTime);
 
-		NewSocketOffset.X = FMath::Lerp(NewSocketOffset.X, OriginalXSocketOffset - YExtra, ZoomSpeed * DeltaTime);
-		CameraBoom->SocketOffset = NewSocketOffset;
+		///NewSocketOffset.X = FMath::Lerp(NewSocketOffset.X, OriginalXSocketOffset - YExtra, ZoomSpeed * DeltaTime);
+		//CameraBoom->SocketOffset = NewSocketOffset;
+		FVector DirectionFromCam = MainCamera->RelativeLocation;
+		DirectionFromCam.Normalize();
+		FVector NewCamLocation = FMath::Lerp(MainCamera->RelativeLocation, (DirectionFromCam) * GoalZoom, ZoomSpeed * DeltaTime);
+		MainCamera->SetRelativeLocation(NewCamLocation);
 
 		// ### Set location ###
 		CurrentLocation = FMath::Lerp(CurrentLocation, NewAimPos, MoveSpeed * DeltaTime);
 		SetActorLocation(CurrentLocation);
 
-
-
-
-
-
-
-
 		// Zoom  - CameraBoom->TargetArmLength, CloseBoomArmZ, CloseBoomArmLength
 		// Center pos - CameraBoom->SocketOffset;
 		// Center pos also? - SetActorLocation(CurrentPos);
+
+
+
+
 
 
 		// Check player y distance is too far

@@ -7,8 +7,8 @@
 APotCharacter::APotCharacter()
 {
 	ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle System Component"));
-	 
-	ParticleSystem->SetupAttachment(RootComponent);
+	
+	ParticleSystem->SetupAttachment(GetMesh());
 }
 
 void APotCharacter::Tick(float DeltaTime)

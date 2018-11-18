@@ -26,11 +26,11 @@ public:
 
 	/** Side view camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class UCameraComponent* SideViewCameraComponent;
+		class UCameraComponent* MainCamera;
 
 	/** Camera boom positioning the camera beside the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		class USpringArmComponent* CameraBoom;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	//	class USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		class ATossPotCharacter* Player1;
@@ -38,10 +38,10 @@ public:
 		class ATossPotCharacter* Player2;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		float CloseBoomArmLength;
+		float CloseBoomArmLength = 1000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-		float CloseBoomArmZ;
+		float CloseBoomArmZ = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		float MinPosY = -350;
@@ -59,4 +59,5 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SetControllersView();
+
 };
