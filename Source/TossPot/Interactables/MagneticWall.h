@@ -49,6 +49,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float fPushBackForce = 500.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float MaxMoveSpeed = 500.0f;
+
 	UPROPERTY(Category = Audio, EditAnywhere, BlueprintReadWrite)
 		class USoundBase* MagneticActivate;
 

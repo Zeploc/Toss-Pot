@@ -49,7 +49,8 @@ void AMagneticWall::Tick(float DeltaTime)
 		//DisableTrigger();
 		if (isOverlaping && isPot)
 		{
-			isPot->LaunchCharacter((ArrowComponent->GetForwardVector() * fPushBackForce), false, false);
+			if (isPot->GetVelocity().Size() < MaxMoveSpeed)
+				isPot->LaunchCharacter((ArrowComponent->GetForwardVector() * fPushBackForce), false, false);
 		}
 	}
 	/*else if (ATriggerActor::Triggered)

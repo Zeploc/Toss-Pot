@@ -39,9 +39,12 @@ public:
 
 	virtual void Trigger() override;
 	virtual void DisableTrigger()override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "fug")
 		float PushSpeed = 100.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "fug")
+		float MaxMoveSpeed = 500.0f;
 
 private:
 	bool IsColliding = false;

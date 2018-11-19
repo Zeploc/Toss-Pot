@@ -47,7 +47,8 @@ void AConveyorBelt::Tick(float DeltaTime)
 	{
 		FVector ForwardVector = GetActorForwardVector();
 		ForwardVector *= PushSpeed;
-		Toss->LaunchCharacter((ArrowComponent->GetForwardVector() * PushSpeed), false, false);
+		if (Toss->GetVelocity().Size() < MaxMoveSpeed)
+			Toss->LaunchCharacter((ArrowComponent->GetForwardVector() * PushSpeed), false, false);
 	}
 }
 
