@@ -54,19 +54,22 @@ void ACameraMovement::Tick(float DeltaTime)
 		FVector Difference = Player1->GetActorLocation() - Player2->GetActorLocation();
 		float Distance = Difference.Size();		
 
-		float CenterThreshold = 500.0f;
+		float CenterThreshold = 400.0f;
 		float CenterOffsetThreshold = 200.0f;
 		float MoveSpeed = 6.0f;
 		float CenterMoveSpeed = 30.0f;
 		float CenterOffsetMoveSpeed = 20.0f;
 		FVector NewAimPos = CurrentLocation;
 
-
+		float ExtraNeeded = 0.0f;
 		FVector FurtherPlayer = Player1->GetActorLocation();
-		if (abs((Player2->GetActorLocation() - CurrentLocation).X) > abs((FurtherPlayer - CurrentLocation).X))
+		if (abs((Player2->GetActorLocation() - CurrentLocation).X) > abs((FurtherPlayer - CurrentLocation).X) + ExtraNeeded)
 		{
 			FurtherPlayer = Player2->GetActorLocation();
 		}
+		FVector Direction = (FurtherPlayer - CurrentLocation);
+		Direction.Normalize();
+
 		// If the players start spreading far away  //OR Camera center is too far from the center of players
 		if (abs(Difference.X) >= CenterThreshold)
 		{
@@ -74,8 +77,6 @@ void ACameraMovement::Tick(float DeltaTime)
 		}
 		else if (abs(FurtherPlayer.X - CurrentLocation.X) > CenterOffsetThreshold)
 		{
-			FVector Direction = (FurtherPlayer - CurrentLocation);
-			Direction.Normalize();
 
 			FVector ExtraDistance = FurtherPlayer - (CurrentLocation + Direction * CenterOffsetThreshold);
 
@@ -91,7 +92,7 @@ void ACameraMovement::Tick(float DeltaTime)
 		// ### Finding zoom and boom arm offset ###
 		float CurrentZoom = MainCamera->RelativeLocation.Size();// 0;// CameraBoom->TargetArmLength;
 		float XScaleOutRatio = 0.5f;
-		float YScaleOutRatio = 0.4f;
+		float YScaleOutRatio = 0.7f;
 		float GoalZoom = CloseBoomArmLength;
 		float ZoomSpeed = 5.0f;
 
@@ -112,26 +113,36 @@ void ACameraMovement::Tick(float DeltaTime)
 
 		// ### Z Height ###
 
-		///*float BackPlayerTooFarDistance = 300.0f;
-		//float ZoomOutMultiplyer = 0.013f;
-		//float OffFloorZOffset = 300.0f;
+		float FarHeightDistance = 200.0f;
+		float ZMinusCenterSize = 85.0f;
+		
+		if (abs(CenterPosition.Z - ZMinusCenterSize - CurrentLocation.Z) > FarHeightDistance || (CurrentLocation.Z > 0 && CenterPosition.Z - ZMinusCenterSize <= 10.0f))
+		{
+			NewAimPos.Z = FMath::Lerp(CurrentLocation.Z, CenterPosition.Z, CenterMoveSpeed * DeltaTime);
+		}
+		NewAimPos.Z = FMath::Lerp(CurrentLocation.Z, CenterPosition.Z - ZMinusCenterSize, CenterMoveSpeed * DeltaTime);
 
-		//FVector FurtherBackPlayer = Player1->GetActorLocation();
-		//if (Player2->GetActorLocation().Y < FurtherBackPlayer.Y)
-		//	FurtherBackPlayer = Player2->GetActorLocation();
 
-		//if (FurtherBackPlayer.Z > OffFloorZOffset)
-		//{
-		//	if (abs(Difference.Y) > BackPlayerTooFarDistance)
-		//	{
-		//		CurrentZoom -= (BackPlayerTooFarDistance - abs(Difference.Y)) * ZoomOutMultiplyer;
-		//	}
-		//}
-		//else
-		//{
-		//	
-		//	GoalZoom -= abs(OffFloorZOffset - CenterPosition.Z);
-		//}*/
+		float BackPlayerTooFarDistance = 100.0f;// 200.0f;
+		float HeightZoomOutMultiplyer = 1.1f;
+		float BackZoomOutMultiplyer = 1.1f;
+		float HeightZOffset = 100.0f;
+		
+		FVector FurtherBackPlayer = Player1->GetActorLocation();
+		if (Player2->GetActorLocation().Y < FurtherBackPlayer.Y)
+			FurtherBackPlayer = Player2->GetActorLocation();
+		
+		if (abs(CurrentLocation.Z - FurtherBackPlayer.Z) > HeightZOffset)
+		{
+			if (abs(FurtherBackPlayer.Y - CurrentLocation.Y) > BackPlayerTooFarDistance)
+			{
+				GoalZoom -= (HeightZOffset - abs(CurrentLocation.Z - FurtherBackPlayer.Z)) * HeightZoomOutMultiplyer + (BackPlayerTooFarDistance - abs(FurtherBackPlayer.Y - CurrentLocation.Y)) * BackZoomOutMultiplyer;
+			}
+		}
+		else
+		{			
+			//GoalZoom -= abs(OffFloorZOffset - CenterPosition.Z);
+		}
 
 		/*FVector ZDifference = Difference;
 		ZDifference.X = 0;

@@ -3,7 +3,6 @@ Permanent plate
 camera height
 camera spazzes when at the center threshold
 Fix magnetic wall and conveyer strip not enabling and disabling correctly
-magnetic wall still emits when disabled?
 
 
 
@@ -26,3 +25,4 @@ Delay death
 switch pad stuck
 Conveyer belt stop moving when inactive
 Fix force while in object like conveyer or magnetic
+magnetic wall still emits when disabled?
