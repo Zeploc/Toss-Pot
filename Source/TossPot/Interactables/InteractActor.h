@@ -32,7 +32,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Interact();
+	void Interact();
+	UFUNCTION(Server, WithValidation, Reliable)
+		void SERVER_Interact();
+	UFUNCTION(NetMulticast, Reliable)
+		void MULTI_Interact();
+
+
+	virtual void OnInteract();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bEnabled = false;

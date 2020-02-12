@@ -43,7 +43,7 @@ void ATimedInteractLever::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ATimedInteractLever::Interact()
+void ATimedInteractLever::OnInteract()
 {
 	//if (!bOverlapping) return;
 	if (TriggerActor == nullptr)

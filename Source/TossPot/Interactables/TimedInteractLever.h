@@ -57,9 +57,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Interact() override;
+	virtual void OnInteract() override;
 
-	UFUNCTION(BlueprintCallable)
-		virtual void Reset() override;
+	virtual void Reset() override;
 	
 };

@@ -50,7 +50,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		ASwitchPlayersPad* OtherSwitch;
 
-	virtual void Interact();
+	virtual void OnInteract();
 
 protected:
 	// Called when the game starts or when spawned

@@ -55,7 +55,7 @@ void ASwitchPlayersPad::OnTriggerEndOverlap(UPrimitiveComponent * OverlappedComp
 	}
 }
 
-void ASwitchPlayersPad::Interact()
+void ASwitchPlayersPad::OnInteract()
 {
 	if (Overlapped && !Switching && OtherSwitch)
 	{

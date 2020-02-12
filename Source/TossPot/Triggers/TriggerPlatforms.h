@@ -30,8 +30,7 @@ public:
 	virtual void Trigger();
 	virtual void DisableTrigger();
 
-	UFUNCTION(BlueprintCallable)
-		virtual void Reset() override;
+	virtual void Reset() override;
 
 	UPROPERTY(VisibleDefaultsOnly)
 		UStaticMeshComponent* Platform;

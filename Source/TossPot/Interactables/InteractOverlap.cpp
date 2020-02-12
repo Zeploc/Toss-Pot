@@ -9,7 +9,7 @@ AInteractOverlap::AInteractOverlap()
 {
 
 	OverlapColliderBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Overlap Box Collide"));
-	OverlapColliderBox->bGenerateOverlapEvents = true;
+	OverlapColliderBox->SetGenerateOverlapEvents(true);
 	OverlapColliderBox->SetCollisionProfileName("OverlapAll");
 	OverlapColliderBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 

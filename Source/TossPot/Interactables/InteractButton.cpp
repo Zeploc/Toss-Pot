@@ -31,7 +31,7 @@ void AInteractButton::Tick(float DeltaTime)
 
 }
 
-void AInteractButton::Interact()
+void AInteractButton::OnInteract()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, TEXT("Using Interact Button Interact Function"));
 	
