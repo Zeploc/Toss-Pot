@@ -33,7 +33,7 @@ public:
 	// #### HOSTING / JOINING ####		
 
 	UFUNCTION(BlueprintCallable)
-		void ServerTravelToMap(const FString MapName = "BasicLevel");
+		void ServerTravelToMap(const FString MapName = "BasicLevel", const FString AdditionalOptions = "");
 
 	UFUNCTION(BlueprintCallable)
 		void SeemlessTravelToNewMap(const FString MapName = "Olympus_1");

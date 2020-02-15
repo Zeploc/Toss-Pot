@@ -44,14 +44,18 @@ void ACameraMovement::BeginPlay()
 void ACameraMovement::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (Player1 && Player2)
+	if (Player1)// && Player2)
 	{
 		FVector CurrentLocation = GetActorLocation();
-		FVector CenterPosition = FMath::Lerp(Player1->GetActorLocation(), Player2->GetActorLocation(), 0.5);
+		FVector CenterPosition = Player1->GetActorLocation();
+		if (Player2)
+			CenterPosition = FMath::Lerp(Player1->GetActorLocation(), Player2->GetActorLocation(), 0.5);
 		//CurrentLocation.X = CenterPosition.X;
 		//SetActorLocation(CurrentLocation);
 
-		FVector Difference = Player1->GetActorLocation() - Player2->GetActorLocation();
+		FVector Difference = FVector(0.0f);
+		if (Player2)
+			Difference = Player1->GetActorLocation() - Player2->GetActorLocation();
 		float Distance = Difference.Size();		
 
 		float CenterThreshold = 400.0f;
@@ -63,10 +67,14 @@ void ACameraMovement::Tick(float DeltaTime)
 
 		float ExtraNeeded = 0.0f;
 		FVector FurtherPlayer = Player1->GetActorLocation();
-		if (abs((Player2->GetActorLocation() - CurrentLocation).X) > abs((FurtherPlayer - CurrentLocation).X) + ExtraNeeded)
+		if (Player2)
 		{
-			FurtherPlayer = Player2->GetActorLocation();
+			if (abs((Player2->GetActorLocation() - CurrentLocation).X) > abs((FurtherPlayer - CurrentLocation).X) + ExtraNeeded)
+			{
+				FurtherPlayer = Player2->GetActorLocation();
+			}
 		}
+		
 		FVector Direction = (FurtherPlayer - CurrentLocation);
 		Direction.Normalize();
 
@@ -129,8 +137,11 @@ void ACameraMovement::Tick(float DeltaTime)
 		float HeightZOffset = 100.0f;
 		
 		FVector FurtherBackPlayer = Player1->GetActorLocation();
-		if (Player2->GetActorLocation().Y < FurtherBackPlayer.Y)
-			FurtherBackPlayer = Player2->GetActorLocation();
+		if (Player2)
+		{
+			if (Player2->GetActorLocation().Y < FurtherBackPlayer.Y)
+				FurtherBackPlayer = Player2->GetActorLocation();
+		}
 		
 		if (abs(CurrentLocation.Z - FurtherBackPlayer.Z) > HeightZOffset)
 		{

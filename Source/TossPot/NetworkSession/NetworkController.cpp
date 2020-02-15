@@ -64,9 +64,9 @@ void ANetworkController::Tick(float DeltaTime)
 }
 
 
-void ANetworkController::ServerTravelToMap(const FString MapName)
+void ANetworkController::ServerTravelToMap(const FString MapName, const FString AdditionalOptions)
 {
-	const FString URL = "/Game/Maps/" + MapName + "?Listen";
+	const FString URL = "/Game/Maps/" + MapName + "?Listen?" + AdditionalOptions;
 	//GEngine->AddOnScreenDebugMessage(-1, 4.0f, FColor::Green, "Server traveling to map " + MapName);
 	GetWorld()->ServerTravel(URL);
 	//GetWorld()->SeamlessTravel(URL);
