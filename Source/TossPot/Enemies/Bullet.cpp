@@ -5,7 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 #include "Runtime/Engine/Classes/Kismet/KismetSystemLibrary.h"
 
 #include "Engine.h"

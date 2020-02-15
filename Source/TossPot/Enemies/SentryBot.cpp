@@ -10,7 +10,7 @@
 #include "MovementPoint.h"
 //#include "Classes/Engine/SpotLight.h"
 
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 
 #include "Engine.h"
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 #include "TossCharacter.generated.h"
 
 /**

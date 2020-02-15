@@ -6,8 +6,10 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Triggers/TriggerActor.h"
 #include "Triggers/DoorTrigger.h"
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 #include "Engine.h"
+
+#include "UnrealNetwork.h"
 
 
 // Sets default values
@@ -87,3 +89,10 @@ void AInteractLever::OnLeverEndOverlap(UPrimitiveComponent * OverlappedComp, AAc
 	if (Cast<ATossPotCharacter>(OtherActor))
 		bOverlapping = false;
 }
+
+//void AInteractLever::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+//{
+//	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+//
+//	DOREPLIFETIME(AInteractLever, TriggerActor);
+//}

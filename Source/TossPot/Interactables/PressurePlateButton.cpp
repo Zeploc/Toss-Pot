@@ -6,7 +6,7 @@
 
 #include "Engine/StaticMesh.h"
 #include "Triggers/TriggerActor.h"
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 
 // Sets default values
 APressurePlateButton::APressurePlateButton()

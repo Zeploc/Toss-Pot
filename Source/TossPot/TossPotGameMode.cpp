@@ -2,7 +2,7 @@
 
 #include "TossPotGameMode.h"
 #include "TossPot/Player/CameraMovement.h"
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 #include "Engine.h"
 
 ATossPotGameMode::ATossPotGameMode()

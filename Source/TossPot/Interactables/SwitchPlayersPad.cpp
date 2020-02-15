@@ -8,7 +8,7 @@
 #include "Engine/World.h"
 #include "TossPotGameMode.h"
 
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 
 #include "Engine.h"
 

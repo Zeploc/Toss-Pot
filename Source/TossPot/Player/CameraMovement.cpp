@@ -5,7 +5,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Engine.h"
 
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 
 
 // Sets default values

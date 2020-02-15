@@ -3,7 +3,7 @@
 #include "TimedInteractLever.h"
 #include "Components/BoxComponent.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 #include "Triggers/TriggerActor.h"
 #include "Engine.h"
 

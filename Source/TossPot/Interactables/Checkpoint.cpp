@@ -6,7 +6,7 @@
 #include "Components/BoxComponent.h"
 
 
-#include "TossPotCharacter.h"
+#include "Player/TossPotCharacter.h"
 #include "Player/TossCharacter.h"
 #include "Player/PotCharacter.h"
 #include "Interactables/InteractActor.h"

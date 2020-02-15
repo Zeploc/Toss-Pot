@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
+//#include "GameFramework/GameModeBase.h"
+#include "NetworkSession/NetworkGameMode.h"
 #include "TossPotGameMode.generated.h"
 
 UCLASS(minimalapi)
-class ATossPotGameMode : public AGameModeBase
+class ATossPotGameMode : public ANetworkGameMode// AGameModeBase
 {
 	GENERATED_BODY()
 

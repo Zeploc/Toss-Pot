@@ -3,3 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+//Logging during game startup
+DECLARE_LOG_CATEGORY_EXTERN(LogMythosPartyInit, Log, All);

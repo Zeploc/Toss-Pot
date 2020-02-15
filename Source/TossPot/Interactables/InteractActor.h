@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NetworkSession/NetworkInitialiseInterface.h"
 #include "InteractActor.generated.h"
 
 UENUM(BlueprintType)
@@ -15,13 +16,15 @@ enum class EInteractMode : uint8
 };
 
 UCLASS()
-class TOSSPOT_API AInteractActor : public AActor
+class TOSSPOT_API AInteractActor : public AActor, public INetworkInitialiseInterface
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
 	AInteractActor();
+
+	class UNetworkInitialiseComponent* NetworkInitialiseComponent;
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,6 +43,9 @@ public:
 
 
 	virtual void OnInteract();
+	
+
+	virtual void Initialise_Implementation() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bEnabled = false;

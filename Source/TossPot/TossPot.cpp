@@ -5,3 +5,6 @@
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, TossPot, "TossPot" );
  
+
+//Logging during game startup
+DEFINE_LOG_CATEGORY(LogMythosPartyInit);
