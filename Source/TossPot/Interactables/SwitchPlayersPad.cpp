@@ -68,8 +68,8 @@ void ASwitchPlayersPad::OnInteract()
 			GetWorldTimerManager().SetTimer(SwitchingDelay, this, &ASwitchPlayersPad::SwitchPlayers, SwitchDelayTime, false);
 			APlayerController* Player1 = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 			APlayerController* Player2 = UGameplayStatics::GetPlayerController(GetWorld(), 1);
-			Player1->GetCharacter()->DisableInput(Player1);
-			Player2->GetCharacter()->DisableInput(Player2);
+			if (Player1) Player1->GetCharacter()->DisableInput(Player1);
+			if (Player2) Player2->GetCharacter()->DisableInput(Player2);
 		}
 	}
 }
@@ -77,17 +77,42 @@ void ASwitchPlayersPad::OnInteract()
 void ASwitchPlayersPad::SwitchPlayers()
 {
 	GetWorldTimerManager().ClearTimer(SwitchingDelay);
-	Cast<ATossPotGameMode>(GetWorld()->GetAuthGameMode())->SwitchPlayers();
 	Switching = false;
 	OtherSwitch->Switching = false;
+
 	APlayerController* Player1 = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	APlayerController* Player2 = UGameplayStatics::GetPlayerController(GetWorld(), 1);
-	Player1->GetCharacter()->EnableInput(Player1);
-	Player2->GetCharacter()->EnableInput(Player2);
-	FVector P1Loc = Player1->GetCharacter()->GetActorLocation();
-	FVector P2Loc = Player2->GetCharacter()->GetActorLocation();
+	if (Player1) Player1->GetCharacter()->EnableInput(Player1);
+	if (Player2) Player2->GetCharacter()->EnableInput(Player2);
+
+	if (HasAuthority())
+	{
+		if (ATossPotGameMode* TossPotGameMode = Cast<ATossPotGameMode>(GetWorld()->GetAuthGameMode()))
+		{
+			TossPotGameMode->SwitchPlayers();
+		}
+	}
+
+	ACharacter* Player1Character;
+	if (Player1)
+		Player1Character = Player1->GetCharacter();
+	else
+		Player1Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+
+	ACharacter* Player2Character;
+	if (Player2)
+		Player2Character = Player2->GetCharacter();
+	else
+		Player2Character = UGameplayStatics::GetPlayerCharacter(GetWorld(), 1);
+
+	if (!Player1Character || !Player2Character)
+		return;
+
+	FVector P1Loc = Player1Character->GetActorLocation();
+	FVector P2Loc = Player2Character->GetActorLocation();
 	P1Loc.Z += 50.0f;
 	P2Loc.Z += 50.0f;
 	Player1->GetCharacter()->SetActorLocation(P1Loc);
 	Player2->GetCharacter()->SetActorLocation(P2Loc);
+
 }

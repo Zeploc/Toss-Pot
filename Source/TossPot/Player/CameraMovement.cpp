@@ -82,7 +82,7 @@ void ACameraMovement::Tick(float DeltaTime)
 
 			float NewXPosition = CurrentLocation.X + ExtraDistance.X;// (CenterPosition.X - CurrentLocation.X) - (Direction.X) * Distance / 4.0f; // (CurrentLocation + Direction * CenterOffsetThreshold).X; // CenterOffsetThreshold - -CurrentLocation.X;
 			//NewXPosition += CenterOffsetThreshold - CenterPosition.X + CurrentLocation.X;
-			NewAimPos.X = FMath::Lerp(CurrentLocation.X, NewXPosition, CenterOffsetMoveSpeed * DeltaTime);
+			NewAimPos.X = FMath::Lerp(CurrentLocation.X, NewXPosition, FMath::Min(CenterOffsetMoveSpeed * DeltaTime, 1.0f));
 		}
 
 		
@@ -118,9 +118,9 @@ void ACameraMovement::Tick(float DeltaTime)
 		
 		if (abs(CenterPosition.Z - ZMinusCenterSize - CurrentLocation.Z) > FarHeightDistance || (CurrentLocation.Z > 0 && CenterPosition.Z - ZMinusCenterSize <= 10.0f))
 		{
-			NewAimPos.Z = FMath::Lerp(CurrentLocation.Z, CenterPosition.Z, CenterMoveSpeed * DeltaTime);
+			NewAimPos.Z = FMath::Lerp(CurrentLocation.Z, CenterPosition.Z, FMath::Min(CenterMoveSpeed * DeltaTime, 1.0f));
 		}
-		NewAimPos.Z = FMath::Lerp(CurrentLocation.Z, CenterPosition.Z - ZMinusCenterSize, CenterMoveSpeed * DeltaTime);
+		NewAimPos.Z = FMath::Lerp(CurrentLocation.Z, CenterPosition.Z - ZMinusCenterSize, FMath::Min(CenterMoveSpeed * DeltaTime, 1.0f));
 
 
 		float BackPlayerTooFarDistance = 100.0f;// 200.0f;
@@ -173,7 +173,7 @@ void ACameraMovement::Tick(float DeltaTime)
 		//CameraBoom->SocketOffset = NewSocketOffset;
 		FVector DirectionFromCam = MainCamera->RelativeLocation;
 		DirectionFromCam.Normalize();
-		FVector NewCamLocation = FMath::Lerp(MainCamera->RelativeLocation, (DirectionFromCam) * GoalZoom, ZoomSpeed * DeltaTime);
+		FVector NewCamLocation = FMath::Lerp(MainCamera->RelativeLocation, (DirectionFromCam) * GoalZoom, FMath::Min(ZoomSpeed * DeltaTime, 1.0f));
 		MainCamera->SetRelativeLocation(NewCamLocation);
 
 		// ### Set location ###
