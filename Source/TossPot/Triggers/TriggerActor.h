@@ -27,7 +27,7 @@ public:
 	virtual void DisableTrigger();
 	void Toggle();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 		bool Triggered = false;
 
 	UFUNCTION(BlueprintCallable)

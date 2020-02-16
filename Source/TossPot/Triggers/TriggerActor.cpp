@@ -3,6 +3,8 @@
 #include "TriggerActor.h"
 #include "Engine.h"
 
+#include "UnrealNetwork.h"
+
 
 // Sets default values
 ATriggerActor::ATriggerActor()
@@ -51,4 +53,11 @@ void ATriggerActor::Toggle()
 void ATriggerActor::Reset()
 {
 	Triggered = false;
+}
+
+void ATriggerActor::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ATriggerActor, Triggered);
 }
